@@ -24,7 +24,7 @@
 
   <!-- Bottom Menu -->
   <div class="border-t">
-    <div class="flex justify-center gap-10 py-3 text-sm uppercase font-semibold">
+    <div class="flex justify-center gap-10 py-[2rem] text-sm uppercase font-semibold">
       <a href="/" class="text-orange-500">Home</a>
       <span>|</span>
       <div class="relative group">
