@@ -14,10 +14,10 @@
         </p>
         <a href="#" class="border border-indigo-600 text-indigo-600 px-5 py-2 rounded hover:bg-indigo-50">Read More →</a>
       </div>
-      <div class="grid grid-cols-3 gap-4 md:w-1/2">
-        <img src="{{ asset('images/book1.jpg') }}" class="w-32 shadow-lg rounded">
-        <img src="{{ asset('images/book2.jpg') }}" class="w-32 shadow-lg rounded">
-        <img src="{{ asset('images/book3.jpg') }}" class="w-32 shadow-lg rounded">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; justify-items:center;">
+        <img src="{{ asset('images/book1.jpg') }}" style="width:128px; height:192px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
+        <img src="{{ asset('images/book2.jpg') }}" style="width:128px; height:192px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
+        <img src="{{ asset('images/book3.jpg') }}" style="width:128px; height:192px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
       </div>
     </div>
   </section>
