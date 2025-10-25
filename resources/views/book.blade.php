@@ -1,8 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  @include('component.navbar')
-
   <section class="bg-gray-50 py-12">
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-3xl p-10">
       <div class="grid lg:grid-cols-[340px,1fr] gap-12">

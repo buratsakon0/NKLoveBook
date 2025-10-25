@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-  @include('component.navbar')
 
   <!-- 🟣 Banner Section -->
   <section class="bg-gradient-to-r from-indigo-50 to-white py-16">
