@@ -2,16 +2,13 @@
 
 @section('content')
 
-  <!-- 🟣 Banner Section (รวมเวอร์ชันใหม่ + gradient สวยขึ้น) -->
+  <!-- 🟣 Banner Section -->
   <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:8rem; padding-bottom:8rem;">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 px-6">
       <div class="md:w-1/2">
-        <!-- ✅ ขยายขนาดฟอนต์ -->
         <h2 class="font-bold text-indigo-900 mb-6" style="font-size:3rem;">น้ำข้าวรักหนังสือ</h2>
-
-        <!-- ✅ บรรทัดเดียวหรือแยกด้วย <br> ตามต้องการ -->
         <p class="text-gray-700 mb-8" style="font-size:1.1rem; line-height:1.8;">
-          “ที่นี่....เราคัดสรรหนังสือดี ๆ เพื่อให้ทุกคนได้เจอเรื่องราวที่ใช่<br>
+          “ที่นี่...เราคัดสรรหนังสือดี ๆ เพื่อให้ทุกคนได้เจอเรื่องราวที่ใช่<br>
           ในวันที่ต้องการแรงบันดาลใจ”
         </p>
 
@@ -19,8 +16,6 @@
           Read More →
         </a>
       </div>
-
-      <!-- ✅ ขยายรูป และลดช่องว่าง gap -->
       <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; justify-items:center;">
         <img src="{{ asset('images/book1.jpg') }}" style="width:180px; height:260px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
         <img src="{{ asset('images/book2.jpg') }}" style="width:180px; height:260px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
