@@ -57,23 +57,25 @@
 
   <!-- Best Seller -->
   <section class="bg-gradient-to-r from-white to-orange-50 py-16">
-    <div class="text-center mb-10">
-      <p class="text-gray-400 uppercase text-sm tracking-widest">Some Quality Items</p>
-      <h2 class="text-3xl font-bold text-indigo-900">Best Seller</h2>
-    </div>
-    <div class="flex flex-wrap justify-center gap-10">
-      @foreach (['bookA.jpg'=>'เขมจิราต้องรอด','bookB.jpg'=>'ดอกรักผลิบานที่กลางใจ','bookC.jpg'=>'จดหมายจากดาวแมว','bookD.jpg'=>'แนวข้อสอบ TGAT'] as $img=>$title)
-        <div class="bg-white shadow-md rounded-lg overflow-hidden w-52">
-          <img src="{{ asset('images/'.$img) }}" class="w-full h-64 object-cover">
-          <div class="p-3 text-center">
-            <h4 class="font-semibold text-indigo-900">{{ $title }}</h4>
-            <p class="text-orange-600 font-semibold">฿ {{ rand(150,500) }}.00</p>
-          </div>
+  <div class="text-center mb-10">
+    <p class="text-gray-400 uppercase text-sm tracking-widest">Some Quality Items</p>
+    <h2 class="text-3xl font-bold text-indigo-900">Best Seller</h2>
+  </div>
+
+  <div class="flex flex-wrap justify-center gap-10">
+    @foreach ($books as $book)
+      <div class="bg-white shadow-md rounded-lg overflow-hidden w-60">
+        <img src="{{ asset('images/'.$book->cover_image) }}" class="w-full h-64 object-cover">
+        <div class="p-4 text-center">
+          <h4 class="font-semibold text-indigo-900">{{ $book->title }}</h4>
+          <p class="text-gray-500 text-sm">{{ $book->author }}</p>
+          <p class="text-orange-600 font-semibold mt-1">฿ {{ $book->price }}</p>
+          <p class="text-xs text-gray-400 mt-2">ISBN: {{ $book->isbn }}</p>
+          <p class="text-xs text-gray-400">Pages: {{ $book->pages }}</p>
         </div>
-      @endforeach
-    </div>
-    <div class="text-center mt-8">
-      <a href="#" class="text-orange-600 font-semibold hover:underline">View All Products →</a>
-    </div>
-  </section>
+      </div>
+    @endforeach
+  </div>
+</section>
+
 @endsection
