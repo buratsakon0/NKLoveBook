@@ -12,9 +12,10 @@
     </p>
   </div>
 
-  <div class="max-w-7xl mx-auto flex flex-wrap justify-center gap-10">
+ <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-items-start">
     @foreach ($books as $book)
-      <div class="bg-white shadow-lg rounded-xl overflow-hidden w-72 hover:shadow-2xl transition duration-200">
+      <div class="bg-white shadow-lg rounded-xl overflow-hidden w-72 h-[480px] flex flex-col justify-between hover:shadow-2xl transition duration-200">
+
         <!--  รูปหนังสือ -->
         <div class="bg-transparent p-15 flex justify-center items-center h-80 overflow-hidden">
         <a href="{{ route('book.show', $book->BookID) }}">

@@ -65,7 +65,7 @@
 
         {{-- 🔸 หมวดเพิ่มเติม (เริ่มซ่อน) --}}
         <div class="hidden extra-category shadow-md rounded-lg overflow-hidden">
-          <img src="{{ asset('images/education and learning.jpg') }}" class="w-full h-48 object-cover">
+          <img src="{{ asset('images/Education and Learning.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Education & Learning</h4>
             <p class="text-gray-500 text-sm">เปิดประตูสู่โลกแห่งความรู้ ที่จะช่วยพัฒนาทักษะและมุมมองของคุณให้ก้าวไกล ไม่ว่าจะเป็นความรู้ด้านวิชาการ ภาษา หรือทักษะชีวิตในยุคใหม่</p>
