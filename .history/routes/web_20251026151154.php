@@ -3,14 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
-<<<<<<< HEAD
-use App\Http\Controllers\BookController;
-=======
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use App\Models\User;
->>>>>>> f952a68 (feat:login)
 
 // หน้าแรก
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -19,7 +15,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/home', 'home');
 
 // หน้า book
-Route::get('/book/{book}', [BookController::class, 'show'])->name('book.show');
+Route::get('/book', function () {
+    return view('book');
+})->name('book');
 
 // หน้า contact
 Route::get('/contact', function () {
@@ -40,12 +38,4 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/profile', [ProfileController::class, 'show'])->middleware('auth')->name('profile');
 
-Route::get('/api/check-username', function (Request $request) {
-    $exists = User::where('Username', $request->Username)->exists();
-    return response()->json(['exists' => $exists]);
-});
 
-Route::get('/api/check-email', function (Request $request) {
-    $exists = User::where('Email', $request->Email)->exists();
-    return response()->json(['exists' => $exists]);
-});

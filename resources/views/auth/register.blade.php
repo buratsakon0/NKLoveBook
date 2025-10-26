@@ -1,0 +1,93 @@
+@extends('layouts.app')
+
+@section('content')
+<div class="max-w-md mx-auto mt-10 bg-white p-8 rounded-xl shadow">
+    <h2 class="text-center text-2xl font-bold text-indigo-700 mb-6">สมัครสมาชิก</h2>
+
+    <form id="registerForm" method="POST" action="{{ route('register') }}">
+        @csrf
+
+        {{-- Username --}}
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">ชื่อผู้ใช้</label>
+            <input type="text" name="Username" id="Username" class="w-full border rounded-lg px-3 py-2">
+            <span id="UsernameError" class="text-red-500 text-sm"></span>
+        </div>
+
+        {{-- ชื่อจริง --}}
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">ชื่อจริง</label>
+            <input type="text" name="Fname" id="Fname" class="w-full border rounded-lg px-3 py-2">
+            <span id="FnameError" class="text-red-500 text-sm"></span>
+        </div>
+
+        {{-- นามสกุล --}}
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">นามสกุล</label>
+            <input type="text" name="Lname" id="Lname" class="w-full border rounded-lg px-3 py-2">
+            <span id="LnameError" class="text-red-500 text-sm"></span>
+        </div>
+
+        {{-- Email --}}
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">อีเมล</label>
+            <input type="email" name="Email" id="Email" class="w-full border rounded-lg px-3 py-2">
+            <span id="EmailError" class="text-red-500 text-sm"></span>
+        </div>
+
+        {{-- Password --}}
+        <div class="mb-4">
+            <label class="block text-sm font-semibold mb-1">รหัสผ่าน</label>
+            <input type="password" name="Password" id="Password" class="w-full border rounded-lg px-3 py-2">
+            <span id="PasswordError" class="text-red-500 text-sm"></span>
+        </div>
+
+        {{-- Confirm --}}
+        <div class="mb-6">
+            <label class="block text-sm font-semibold mb-1">ยืนยันรหัสผ่าน</label>
+            <input type="password" name="Password_confirmation" id="Password_confirmation" class="w-full border rounded-lg px-3 py-2">
+            <span id="PasswordConfirmError" class="text-red-500 text-sm"></span>
+        </div>
+
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">
+            สมัครสมาชิก
+        </button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const username = document.getElementById('Username');
+    const email = document.getElementById('Email');
+    const password = document.getElementById('Password');
+    const confirm = document.getElementById('Password_confirmation');
+
+    // ตรวจ username ซ้ำ
+    username.addEventListener('input', async () => {
+        const res = await fetch(`/api/check-username?Username=${username.value}`);
+        const data = await res.json();
+        document.getElementById('UsernameError').textContent =
+            data.exists ? 'ชื่อผู้ใช้นี้ถูกใช้แล้ว' : '';
+    });
+
+    // ตรวจ email ซ้ำ
+    email.addEventListener('input', async () => {
+        const res = await fetch(`/api/check-email?Email=${email.value}`);
+        const data = await res.json();
+        document.getElementById('EmailError').textContent =
+            data.exists ? 'อีเมลนี้ถูกใช้แล้ว' : '';
+    });
+
+    // ตรวจ password ทันที
+    password.addEventListener('input', () => {
+        document.getElementById('PasswordError').textContent =
+            password.value.length < 6 ? 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร' : '';
+    });
+
+    confirm.addEventListener('input', () => {
+        document.getElementById('PasswordConfirmError').textContent =
+            confirm.value !== password.value ? 'รหัสผ่านไม่ตรงกัน' : '';
+    });
+});
+</script>
+@endsection

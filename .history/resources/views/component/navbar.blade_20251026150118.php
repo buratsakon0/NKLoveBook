@@ -122,12 +122,12 @@
     <!-- Right: Icons -->
     <div class="flex gap-5 text-sm font-medium text-indigo-800">
     @auth
-        <!-- ✅ login แล้ว -->
+        <!-- ✅ ถ้า login แล้ว -->
         <a href="{{ route('profile') }}" class="text-indigo-600 font-semibold">
             {{ Auth::user()->Username }}
         </a>
     @else
-        <!-- ❌ ยังไม่ login -->
+        <!-- ❌ ถ้ายังไม่ได้ login -->
         <a href="{{ route('login') }}" class="text-indigo-600 font-semibold">
             ACCOUNT
         </a>
@@ -143,7 +143,6 @@
     </a>
 </div>
 
-  </div>
 
   <!-- Bottom Menu -->
   <div class="border-t">
