@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="flex justify-center items-center min-h-[90vh] bg-[#f8f9fa] px-4">
-    <div class="bg-white shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl min-h-[550px] items-stretch">
+    <div class="bg-white shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl">
 
         {{-- 🌸 ภาพประกอบด้านซ้าย --}}
         <div class="hidden md:flex w-1/2 bg-[#f2f2f2] justify-center items-center">
@@ -14,7 +14,9 @@
         </div>
 
         {{-- 🪄 ฟอร์มเข้าสู่ระบบ --}}
-        <div class="w-full md:w-1/2 p-10 flex flex-col justify-center flex-1">
+        <div class="w-full md:w-1/2 p-10 flex flex-col justify-center">
+            
+
             <h2 class="text-center text-2xl font-bold text-[#2b2b7b] mb-6">เข้าสู่ระบบ</h2>
 
             @if ($errors->has('login_error'))
@@ -26,6 +28,7 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
+                {{-- Username --}}
                 <div class="mb-4">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">ชื่อผู้ใช้หรืออีเมล</label>
                     <input
@@ -37,6 +40,7 @@
                         required>
                 </div>
 
+                {{-- Password --}}
                 <div class="mb-6">
                     <label class="block text-sm font-semibold mb-2 text-gray-700">รหัสผ่าน</label>
                     <input

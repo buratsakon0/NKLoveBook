@@ -6,7 +6,7 @@
 
         <div class="hidden md:flex w-1/2 bg-[#f2f2f2] justify-center items-center">
             <img
-                src="{{ asset('images/login-illustration.jpg') }}"
+                src="{{ asset('images/Namkhaw_love_book.gif') }}"
                 alt="Register Illustration"
                 class="w-full h-full object-cover"
                 style="object-position: center top;">

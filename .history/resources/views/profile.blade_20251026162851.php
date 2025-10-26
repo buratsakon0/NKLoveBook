@@ -4,13 +4,13 @@
 <div class="min-h-[80vh] flex justify-center items-center bg-gradient-to-b from-indigo-50 to-white py-10 px-4">
     <div class="bg-white shadow-lg rounded-2xl p-8 w-full max-w-xl border border-indigo-100">
         
-        <!-- <div class="hidden md:flex  bg-[#f2f2f2] justify-center items-center">
+        <div class="hidden md:flex w-1/2 bg-[#f2f2f2] justify-center items-center">
             <img
-                src="{{ asset('images/Namkhaw_love_book.gif') }}"
+                src="{{ asset('images/login-illustration.jpg') }}"
                 alt="Register Illustration"
                 class="w-full h-full object-cover"
                 style="object-position: center top;">
-        </div> -->
+        </div>
         <div class="text-center mb-8">
             <h2 class="text-2xl font-bold text-indigo-700 mt-4">{{ $user->Username }}</h2>
             <p class="text-gray-500 text-sm mt-1">✨ ยินดีต้อนรับสู่ น้ำข้าวรักหนังสือ ✨</p>

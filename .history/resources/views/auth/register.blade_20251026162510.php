@@ -4,6 +4,7 @@
 <div class="flex justify-center items-center min-h-[90vh] bg-[#f8f9fa] px-4">
     <div class="bg-white shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl">
 
+        {{-- 🌸 ภาพประกอบด้านซ้าย --}}
         <div class="hidden md:flex w-1/2 bg-[#f2f2f2] justify-center items-center">
             <img
                 src="{{ asset('images/login-illustration.jpg') }}"
@@ -12,6 +13,7 @@
                 style="object-position: center top;">
         </div>
 
+        {{-- 🪄 ฟอร์มสมัครสมาชิก --}}
         <div class="w-full md:w-1/2 p-10 flex flex-col justify-center">
             <h2 class="text-center text-2xl font-bold text-[#2b2b7b] mb-6">สมัครสมาชิก</h2>
 
