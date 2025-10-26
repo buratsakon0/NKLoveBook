@@ -44,15 +44,25 @@
               <button id="increase" class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">+</button>
             </div>
 
-            <button class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
-              <i class="fa fa-shopping-cart"></i>
-              ADD TO CART
-            </button>
+            <!-- ฟอร์ม Add to Cart -->
+            <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
+              @csrf
+              <input type="hidden" name="quantity" id="cartQuantity" value="1">
+              <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+                <i class="fa fa-shopping-cart"></i>
+                ADD TO CART
+              </button>
+            </form>
 
-            <button class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
-              <i class="fa fa-bolt"></i>
-              BUY
-            </button>
+            <!-- ฟอร์ม Buy -->
+            <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
+              @csrf
+              <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
+              <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                <i class="fa fa-bolt"></i>
+                BUY
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -68,7 +78,6 @@
 
       <div class="mt-12">
         <h2 class="text-lg font-bold text-gray-900 uppercase tracking-wide">Reviews:</h2>
-
         <div class="mt-6 grid md:grid-cols-2 gap-6">
           <div class="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
             <div class="flex items-center gap-4">
@@ -130,6 +139,10 @@
       let quantityElement = document.getElementById("quantity");
       let currentQuantity = parseInt(quantityElement.textContent);
       quantityElement.textContent = currentQuantity + 1;
+
+      // อัปเดตค่าใน hidden input สำหรับทั้งฟอร์ม
+      document.getElementById("cartQuantity").value = currentQuantity + 1;
+      document.getElementById("cartQuantityBuy").value = currentQuantity + 1;
     });
 
     document.getElementById("decrease").addEventListener("click", function() {
@@ -137,9 +150,12 @@
       let currentQuantity = parseInt(quantityElement.textContent);
       if (currentQuantity > 1) {
         quantityElement.textContent = currentQuantity - 1;
+
+        // อัปเดตค่าใน hidden input สำหรับทั้งฟอร์ม
+        document.getElementById("cartQuantity").value = currentQuantity - 1;
+        document.getElementById("cartQuantityBuy").value = currentQuantity - 1;
       }
     });
   </script>
 
-  
 @endsection

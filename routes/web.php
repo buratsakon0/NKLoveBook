@@ -8,6 +8,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Controllers\CartController;
+
 
 // หน้าแรก
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -46,3 +48,14 @@ Route::get('/api/check-email', function (Request $request) {
     $exists = User::where('Email', $request->Email)->exists();
     return response()->json(['exists' => $exists]);
 });
+
+// เส้นทางสำหรับเพิ่มสินค้าไปยังตะกร้า
+Route::post('/cart/add/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
+
+// เส้นทางสำหรับแสดงสินค้าทั้งหมดในตะกร้า
+Route::get('/cart', [CartController::class, 'showCart'])->name('cart.index');
+
+// เส้นทางสำหรับอัพเดตจำนวนสินค้าภายในตะกร้า
+Route::put('/cart/update/{productId}', [CartController::class, 'updateCart'])->name('cart.update');
+Route::post('/cart/update/{productId}', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');

@@ -134,9 +134,11 @@
     @endauth
 
     <span>|</span>
-    <a href="#" class="flex items-center gap-1 hover:text-indigo-500">
+    <a href="{{ route('cart.index') }}" class="flex items-center gap-1 hover:text-indigo-500">
         <i class="fa fa-shopping-cart"></i> CART
     </a>
+
+
     <span>|</span>
     <a href="#" class="flex items-center gap-1 hover:text-indigo-500">
         <i class="fa fa-heart"></i> WISHLIST

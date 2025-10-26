@@ -11,9 +11,9 @@ class Book extends Model
 
     protected $table = 'books';
     protected $primaryKey = 'BookID';
-    protected $fillable = [
+     protected $fillable = [
         'BookName', 'ISBN', 'Price', 'Pages', 'Description',
-        'cover_image', 'CategoryID', 'PublisherID', 'AuthorID'
+        'CategoryID', 'PublisherID', 'AuthorID', 'cover_image'
     ];
 
     public $timestamps = true;
