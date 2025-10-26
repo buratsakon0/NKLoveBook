@@ -13,8 +13,9 @@ class Book extends Model
     protected $primaryKey = 'BookID';
     protected $fillable = [
         'BookName', 'ISBN', 'Price', 'Pages', 'Description',
-        'CategoryID', 'PublisherID', 'AuthorID'
+        'cover_image', 'CategoryID', 'PublisherID', 'AuthorID'
     ];
+
     public $timestamps = true;
 
     public function category() {
