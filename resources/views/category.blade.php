@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section class="py-16 bg-gradient-to-r from-orange-50 to-white">
+<section class="py-16 bg-gradient-to-r from-pink-20 to-white">
   <div class="text-center mb-10">
     <h2 class="text-3xl font-bold text-indigo-900">
       {{ $category->CategoryName }}
@@ -57,8 +57,17 @@
     @endforeach
   </div>
 
+    <!-- ปุ่ม Pagination แบบวงกลม -->
+  <!-- แถบ Pagination แบบใหม่ -->
+  <div class="flex justify-center mt-10">
+    {{ $books->links('pagination::simple-tailwind') }}
+  </div>
+
+
   @if ($books->isEmpty())
     <p class="text-center text-gray-500 mt-10">ยังไม่มีหนังสือในหมวดนี้</p>
   @endif
 </section>
+
+
 @endsection
