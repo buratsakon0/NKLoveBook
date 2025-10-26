@@ -11,6 +11,7 @@
     $publisherName = optional($book->publisher)->PublisherName ?? 'Unknown Publisher';
     $categoryName = optional($book->category)->CategoryName ?? 'Uncategorized';
     $averageDisplay = $averageRating !== null ? number_format($averageRating, 1) : '—';
+    $quantity = 1; // Default quantity
   @endphp
 
   <section class="bg-gray-50 py-12">
@@ -38,9 +39,9 @@
 
           <div class="flex flex-wrap items-center gap-5">
             <div class="flex items-center border border-gray-200 rounded-full overflow-hidden bg-white shadow-sm">
-              <button class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">-</button>
-              <span class="px-6 py-2 text-lg font-semibold border-x border-gray-200">1</span>
-              <button class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">+</button>
+              <button id="decrease" class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">-</button>
+              <span id="quantity" class="px-6 py-2 text-lg font-semibold border-x border-gray-200">1</span>
+              <button id="increase" class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">+</button>
             </div>
 
             <button class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
@@ -63,7 +64,6 @@
             {{ $book->Description ?? 'รายละเอียดของหนังสือเล่มนี้ยังไม่พร้อมให้แสดงในขณะนี้' }}
           </p>
         </div>
-
       </div>
 
       <div class="mt-12">
@@ -124,4 +124,22 @@
       <div class="mt-16 text-center text-sm text-gray-300">น้ำข้าวรักหนังสือ</div>
     </div>
   </section>
+
+  <script>
+    document.getElementById("increase").addEventListener("click", function() {
+      let quantityElement = document.getElementById("quantity");
+      let currentQuantity = parseInt(quantityElement.textContent);
+      quantityElement.textContent = currentQuantity + 1;
+    });
+
+    document.getElementById("decrease").addEventListener("click", function() {
+      let quantityElement = document.getElementById("quantity");
+      let currentQuantity = parseInt(quantityElement.textContent);
+      if (currentQuantity > 1) {
+        quantityElement.textContent = currentQuantity - 1;
+      }
+    });
+  </script>
+
+  
 @endsection
