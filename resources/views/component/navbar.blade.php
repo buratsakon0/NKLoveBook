@@ -1,3 +1,111 @@
+@once
+  <style>
+    .nav-category {
+      position: relative;
+      display: inline-block;
+    }
+    .nav-category__toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.2rem 0;
+      border: 0;
+      background: transparent;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-size: 0.9rem;
+      color: #dd4f2f;
+      cursor: pointer;
+      transition: color 0.2s ease;
+    }
+    .nav-category__toggle:focus-visible {
+      outline: 2px solid #f26d3d;
+      outline-offset: 4px;
+    }
+    .nav-category:hover .nav-category__toggle,
+    .nav-category:focus-within .nav-category__toggle {
+      color: #f26d3d;
+    }
+    .nav-category__menu {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 15rem;
+      display: none;
+      background: #fff5e9;
+      border: 1px solid #f2c6a6;
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+      padding-bottom: 0.5rem;
+      z-index: 40;
+    }
+    .nav_item:hover {
+      color: #f26d3d;
+    }
+
+    .nav-category:hover .nav-category__menu,
+    .nav-category:focus-within .nav-category__menu {
+      display: block;
+    }
+    .nav-category:hover > .nav_item,
+    .nav-category:focus-within > .nav_item {
+      color: #f26d3d;
+    }
+    .nav-category__top-strip {
+      height: 4px;
+      background: #b280d6;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+    .nav-category__notch {
+      position: absolute;
+      top: -12px;
+      right: 1.5rem;
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 12px solid #fff5e9;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    }
+    .nav-category__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-category__item {
+      border-top: 1px solid #f2c6a6;
+    }
+    .nav-category__item:first-child {
+      border-top: none;
+    }
+    .nav-category__link {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      display: block;
+      padding: 0.95rem 1.75rem;
+      text-decoration: none;
+      color: #d65032;
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      transition: background-color 0.15s ease, color 0.15s ease;
+    }
+    .nav-category__link:hover,
+    .nav-category__link:focus {
+      background: #ffffff;
+      color: #f26d3d;
+    }
+    .nav-category__link:focus-visible {
+      outline: 2px solid #f26d3d;
+      outline-offset: -2px;
+    }
+  </style>
+@endonce
+
 <nav class="bg-white shadow-md">
   <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
     <!-- Left: Logo -->
@@ -25,19 +133,30 @@
 
   <!-- Bottom Menu -->
   <div class="border-t">
-    <div class="flex justify-center gap-10 py-[2rem] text-sm uppercase font-semibold">
-      <a href="/" class="text-orange-500">Home</a>
+    <div class="flex justify-center gap-10 py-[2rem] text-sm uppercase font-semibold hover:text-[#ED553B]">
+      <a href="/" class="nav_item">Home</a>
       <span>|</span>
-      <div class="relative group">
-        <button>Category <i class="fa fa-chevron-down text-xs"></i></button>
-        <div class="hidden group-hover:block absolute bg-white shadow-md mt-2 py-2 px-4 text-gray-700">
-          <a href="#" class="block py-1 hover:text-indigo-500">Science & Technology</a>
-          <a href="#" class="block py-1 hover:text-indigo-500">Art & Design</a>
-          <a href="#" class="block py-1 hover:text-indigo-500">Comics / Manga</a>
+      <div class="nav-category">
+        <button class="uppercase font-semibold nav_item">
+          Category <i class="fa fa-chevron-down" style="font-size: 0.55rem;"></i>
+        </button>
+        <div class="nav-category__menu">
+          <span class="nav-category__notch"></span>
+          <div class="nav-category__top-strip"></div>
+          <ul class="nav-category__list">
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Education & Learning</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Science & Technology</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Art & Design</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Comics / Manga</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Fiction</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Children's Book</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Health & Lifestyle</button></li>
+            <li class="nav-category__item"><button type="button" class="nav-category__link">Travel</button></li>
+          </ul>
         </div>
       </div>
       <span>|</span>
-      <a href="/contact" class="hover:text-indigo-500">Contact Us</a>
+      <a href="/contact" class="nav_item">Contact Us</a>
     </div>
   </div>
 </nav>
