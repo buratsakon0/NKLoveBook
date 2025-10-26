@@ -2,7 +2,7 @@
   <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
     <!-- Left: Logo -->
     <div class="flex items-center gap-3">
-      <img src="{{ asset('images/newlogo.png') }}" class="w-12 h-12 " alt="logo">
+      <img src="{{ asset('images/newlogo.png') }}" class="w-12 h-12 rounded-full border" alt="logo">
       <span class="text-lg font-bold">น้ำข้าวรักหนังสือ</span>
     </div>
 

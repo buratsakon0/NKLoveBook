@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="container mx-auto my-12 px-4">
-    
+    <h2 class="text-3xl font-bold text-center mb-6 text-indigo-900">น้ำข้าวรักหนังสือ</h2>
 
     <div class="bg-white rounded-lg shadow-lg overflow-hidden">
         <img src="{{ asset('images/Namkhaw_love_book.gif') }}" alt="Books" class="w-full h-72 object-cover">
