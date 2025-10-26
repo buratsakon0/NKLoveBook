@@ -10,7 +10,7 @@ class HomeController extends Controller
     public function index()
     {
         // ดึงข้อมูลหนังสือทั้งหมด หรือเฉพาะ bestseller
-        $books = Book::limit(4)->get();  // หรือใช้ ->orderBy('price', 'desc')->limit(4)->get();
+        $books = Book::with(['author'])->limit(4)->get();  // หรือใช้ ->orderBy('Price', 'desc')->limit(4)->get();
 
         return view('home', compact('books'));
     }
