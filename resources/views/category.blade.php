@@ -17,7 +17,7 @@
       <div class="bg-white shadow-lg rounded-xl overflow-hidden w-72 hover:shadow-2xl transition duration-200">
         <!--  รูปหนังสือ -->
         <div class="bg-transparent p-15 flex justify-center items-center h-80 overflow-hidden">
-        <a href="#">
+        <a href="{{ route('book.show', $book->BookID) }}">
             <img src="{{ asset('images/'.$book->cover_image) }}" 
                 alt="{{ $book->BookName }}"
                 class="w-full h-full object-contain rounded-md shadow-lg transition-transform duration-300 hover:scale-105">
