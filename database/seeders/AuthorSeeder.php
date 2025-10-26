@@ -10,11 +10,11 @@ class AuthorSeeder extends Seeder
     public function run(): void
     {
         $authors = [
-            ['AuthorName' => 'Haruki Murakami'],
-            ['AuthorName' => 'J.K. Rowling'],
-            ['AuthorName' => 'Dan Brown'],
-            ['AuthorName' => 'Yuval Noah Harari'],
-            ['AuthorName' => 'Agatha Christie'],
+            ['AuthorName' => 'คาลิ'],
+            ['AuthorName' => 'Saka Mikami'],
+            ['AuthorName' => 'ศศิ วีระเศรษฐกุล'],
+            ['AuthorName' => 'คาโกะ ฮาเซงาวะ'],
+            ['AuthorName' => 'คาโกะ ฮาเซงาวะ'],
         ];
 
         foreach ($authors as $author) {

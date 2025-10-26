@@ -72,11 +72,11 @@
           <div class="bg-white shadow-md rounded-lg overflow-hidden w-60">
             <img src="{{ asset('images/'.$book->cover_image) }}" class="w-full h-64 object-cover">
             <div class="p-4 text-center">
-              <h4 class="font-semibold text-indigo-900">{{ $book->title }}</h4>
-              <p class="text-gray-500 text-sm">{{ $book->author }}</p>
-              <p class="text-orange-600 font-semibold mt-1">฿ {{ number_format($book->price, 2) }}</p>
-              <p class="text-xs text-gray-400 mt-2">ISBN: {{ $book->isbn }}</p>
-              <p class="text-xs text-gray-400">Pages: {{ $book->pages }}</p>
+              <h4 class="font-semibold text-indigo-900">{{ $book->BookName }}</h4>
+              <p class="text-gray-500 text-sm">{{ $book->author->AuthorName ?? 'ไม่ระบุผู้แต่ง' }}</p>
+              <p class="text-orange-600 font-semibold mt-1">฿ {{ number_format($book->Price, 2) }}</p>
+              <p class="text-xs text-gray-400 mt-2">ISBN: {{ $book->ISBN }}</p>
+              <p class="text-xs text-gray-400">Pages: {{ $book->Pages }}</p>
             </div>
           </div>
         @endforeach
