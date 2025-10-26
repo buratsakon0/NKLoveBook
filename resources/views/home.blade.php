@@ -156,8 +156,16 @@
     <div class="flex flex-wrap justify-center gap-10 px-4 md:px-10">
       @if(isset($books) && count($books) > 0)
         @foreach ($books as $book)
-          <div class="bg-white shadow-md rounded-lg overflow-hidden w-60">
-            <img src="{{ asset('images/'.$book->cover_image) }}" class="w-full h-64 object-cover">
+          @php
+            $coverImage = $book->cover_image
+              ? (filter_var($book->cover_image, FILTER_VALIDATE_URL)
+                  ? $book->cover_image
+                  : asset('images/' . ltrim($book->cover_image, '/')))
+              : asset('images/manga.jpg');
+            $authorName = optional($book->author)->AuthorName ?? 'Unknown Author';
+          @endphp
+          <a href="{{ route('book.show', $book->BookID) }}" class="bg-white shadow-md rounded-lg overflow-hidden w-60 hover:shadow-lg transition-shadow">
+            <img src="{{ $coverImage }}" alt="{{ $book->BookName }} cover" class="w-full h-64 object-cover">
             <div class="p-4 text-center">
               <h4 class="font-semibold text-indigo-900">{{ $book->BookName }}</h4>
               <p class="text-gray-500 text-sm">{{ $book->author->AuthorName ?? 'ไม่ระบุผู้แต่ง' }}</p>
@@ -165,7 +173,7 @@
               <p class="text-xs text-gray-400 mt-2">ISBN: {{ $book->ISBN }}</p>
               {{-- <p class="text-xs text-gray-400">Pages: {{ $book->Pages }}</p> --}}
             </div>
-          </div>
+          </a>
         @endforeach
       @else
         <p class="text-gray-500 italic">No books available right now.</p>

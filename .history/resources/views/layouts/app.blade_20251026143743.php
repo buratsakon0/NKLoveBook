@@ -16,7 +16,21 @@
         @yield('content')
     </main>
 
-    
+    @guest
+    <a href="{{ route('login') }}" class="text-sm text-indigo-700 font-semibold">ACCOUNT</a>
+@endguest
+
+@auth
+    <div class="flex items-center gap-3">
+        <span class="text-sm font-semibold text-gray-700">
+            👤 {{ Auth::user()->Username }}
+        </span>
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit" class="text-sm text-red-500 hover:text-red-700">Logout</button>
+        </form>
+    </div>
+@endauth
 
 </body>
 </html>

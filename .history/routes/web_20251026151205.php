@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
@@ -16,7 +15,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::view('/home', 'home');
 
 // หน้า book
-Route::get('/book/{book}', [BookController::class, 'show'])->name('book.show');
+Route::get('/book', function () {
+    return view('book');
+})->name('book');
 
 // หน้า contact
 Route::get('/contact', function () {

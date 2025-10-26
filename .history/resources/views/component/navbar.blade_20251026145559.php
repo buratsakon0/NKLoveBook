@@ -121,28 +121,28 @@
 
     <!-- Right: Icons -->
     <div class="flex gap-5 text-sm font-medium text-indigo-800">
-    @auth
-        <!-- ✅ login แล้ว -->
-        <a href="{{ route('profile') }}" class="text-indigo-600 font-semibold">
-            {{ Auth::user()->Username }}
-        </a>
-    @else
-        <!-- ❌ ยังไม่ login -->
-        <a href="{{ route('login') }}" class="text-indigo-600 font-semibold">
-            ACCOUNT
-        </a>
-    @endauth
+      @guest
+    <a href="{{ route('login') }}" class="text-sm text-indigo-700 font-semibold">ACCOUNT</a>
+@endguest
 
-    <span>|</span>
-    <a href="#" class="flex items-center gap-1 hover:text-indigo-500">
-        <i class="fa fa-shopping-cart"></i> CART
+@auth
+    <!-- login แล้ว-->
+    <a href="{{ route('profile') }}" class="text-indigo-600 font-semibold">
+        {{ Auth::user()->Username }}
     </a>
-    <span>|</span>
-    <a href="#" class="flex items-center gap-1 hover:text-indigo-500">
-        <i class="fa fa-heart"></i> WISHLIST
+@else
+    <!-- ยังไม่ login -->
+    <a href="{{ route('login') }}" class="text-indigo-600 font-semibold">
+        ACCOUNT
     </a>
-</div>
+@endauth
 
+
+      <span>|</span>
+      <a href="#" class="flex items-center gap-1 hover:text-indigo-500"><i class="fa fa-shopping-cart"></i> CART</a>
+      <span>|</span>
+      <a href="#" class="flex items-center gap-1 hover:text-indigo-500"><i class="fa fa-heart"></i> WISHLIST</a>
+    </div>
   </div>
 
   <!-- Bottom Menu -->
