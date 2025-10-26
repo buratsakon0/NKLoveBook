@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->foreignId('CategoryID')->constrained('categories', 'CategoryID')->cascadeOnDelete();
             $table->foreignId('PublisherID')->constrained('publishers', 'PublisherID')->cascadeOnDelete();
             $table->foreignId('AuthorID')->constrained('authors', 'AuthorID')->cascadeOnDelete();
+            $table->string('cover_image')->nullable();
             $table->timestamps();
         });
     }
