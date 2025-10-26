@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-center items-center min-h-[80vh] bg-[#f8f9fa] px-4 ">
+<div class="flex justify-center items-center min-h-[90vh] bg-[#f8f9fa] px-4 py-2">
     <div class="bg-white shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl">
 
         <div class="hidden md:flex w-1/2 bg-[#f2f2f2] justify-center items-center">

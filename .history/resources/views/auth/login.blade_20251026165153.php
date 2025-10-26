@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex justify-center items-center min-h-[80vh] bg-[#f8f9fa] px-4">
+<div class="flex justify-center items-center min-h-[70vh] bg-[#f8f9fa] px-4">
     <div class="bg-white shadow-xl rounded-2xl flex flex-col md:flex-row overflow-hidden w-full max-w-4xl min-h-[550px] items-stretch">
 
         {{-- 🌸 ภาพประกอบด้านซ้าย --}}
