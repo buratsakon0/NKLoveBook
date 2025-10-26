@@ -3,7 +3,7 @@
 @section('content')
 
   <!-- 🟣 Banner Section -->
-  <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:8rem; padding-bottom:8rem;">
+  <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:2rem; padding-bottom:2rem;">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 px-6">
       <div class="md:w-1/2">
         <h2 class="font-bold text-indigo-900 mb-6" style="font-size:3rem;">น้ำข้าวรักหนังสือ</h2>
@@ -16,10 +16,8 @@
           Read More →
         </a>
       </div>
-      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; justify-items:center;">
-        <img src="{{ asset('images/book1.jpg') }}" style="width:180px; height:260px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
-        <img src="{{ asset('images/book2.jpg') }}" style="width:180px; height:260px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
-        <img src="{{ asset('images/book3.jpg') }}" style="width:180px; height:260px; object-fit:cover; border-radius:10px; box-shadow:0 4px 8px rgba(0,0,0,0.2);">
+      <div>
+        <img src="{{ asset('images/homePicture.png') }}" style="width:750px; height:450px; object-fit:cover; margin-left: 100px;">
       </div>
     </div>
   </section>
