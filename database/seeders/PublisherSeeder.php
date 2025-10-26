@@ -10,11 +10,16 @@ class PublisherSeeder extends Seeder
     public function run(): void
     {
         $publishers = [
-            ['PublisherName' => 'คาลิ'],
-            ['PublisherName' => 'PHOENIX'],
-            ['PublisherName' => 'FULLSTOP'],
-            ['PublisherName' => 'Amarin Kids'],
-            ['PublisherName' => 'Amarin Kids'],
+            ['PublisherName' => 'คาลิ'], //1
+            ['PublisherName' => 'PHOENIX'], //2
+            ['PublisherName' => 'FULLSTOP'], //3
+            ['PublisherName' => 'Amarin Kids'], //4
+
+            // Art & Design
+            ['PublisherName' => 'Bookscape'], //5
+            ['PublisherName' => '10 มิลลิเมตร'], //6
+            ['PublisherName' => 'เอ็มไอเอส,สนพ./MISBook'], //7
+            ['PublisherName' => 'บ้านและสวน'], //8
         ];
 
         foreach ($publishers as $publisher) {
