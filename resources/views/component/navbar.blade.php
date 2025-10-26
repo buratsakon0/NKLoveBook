@@ -1,3 +1,8 @@
+@php
+  use App\Models\Category;
+  $categories = Category::all();
+@endphp
+
 @once
   <style>
     .nav-category {
@@ -44,14 +49,9 @@
     .nav_item:hover {
       color: #f26d3d;
     }
-
     .nav-category:hover .nav-category__menu,
     .nav-category:focus-within .nav-category__menu {
       display: block;
-    }
-    .nav-category:hover > .nav_item,
-    .nav-category:focus-within > .nav_item {
-      color: #f26d3d;
     }
     .nav-category__top-strip {
       height: 4px;
@@ -99,10 +99,6 @@
       background: #ffffff;
       color: #f26d3d;
     }
-    .nav-category__link:focus-visible {
-      outline: 2px solid #f26d3d;
-      outline-offset: -2px;
-    }
   </style>
 @endonce
 
@@ -110,13 +106,15 @@
   <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
     <!-- Left: Logo -->
     <div class="flex items-center gap-3">
-      <img src="{{ asset('images/newlogo.png') }}" class="w-12 h-12 " alt="logo">
+      <img src="{{ asset('images/newlogo.png') }}" class="w-12 h-12" alt="logo">
       <span class="text-lg font-bold">น้ำข้าวรักหนังสือ</span>
     </div>
 
     <!-- Center: Search -->
     <div class="flex-1 mx-8">
-      <input type="text" placeholder="Search Books"
+      <input
+        type="text"
+        placeholder="Search Books"
         style="background-color: #f6f6f6;"
         class="w-full border border-gray-200 rounded-full px-5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400">
     </div>
@@ -133,9 +131,11 @@
 
   <!-- Bottom Menu -->
   <div class="border-t">
-    <div class="flex justify-center gap-10 py-[2rem] text-sm uppercase font-semibold hover:text-[#ED553B]">
-      <a href="/" class="nav_item">Home</a>
+    <div class="flex justify-center gap-10 py-[2rem] text-sm uppercase font-semibold">
+      <a href="/" class="nav_item hover:text-[#ED553B]">Home</a>
       <span>|</span>
+
+      <!-- Dropdown Category -->
       <div class="nav-category">
         <button class="uppercase font-semibold nav_item">
           Category <i class="fa fa-chevron-down" style="font-size: 0.55rem;"></i>
@@ -144,19 +144,19 @@
           <span class="nav-category__notch"></span>
           <div class="nav-category__top-strip"></div>
           <ul class="nav-category__list">
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Education & Learning</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Science & Technology</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Art & Design</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Comics / Manga</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Fiction</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Children's Book</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Health & Lifestyle</button></li>
-            <li class="nav-category__item"><button type="button" class="nav-category__link">Travel</button></li>
+            @foreach ($categories as $cat)
+              <li class="nav-category__item">
+                <a href="{{ route('category.show', $cat->CategoryID) }}" class="nav-category__link">
+                  {{ $cat->CategoryName }}
+                </a>
+              </li>
+            @endforeach
           </ul>
         </div>
       </div>
+
       <span>|</span>
-      <a href="/contact" class="nav_item">Contact Us</a>
+      <a href="/contact" class="nav_item hover:text-[#ED553B]">Contact Us</a>
     </div>
   </div>
 </nav>

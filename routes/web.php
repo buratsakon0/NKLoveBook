@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CategoryController;
 
 // หน้าแรก
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -18,3 +19,5 @@ Route::get('/book', function () {
 Route::get('/contact', function () {
     return view('contact');
 })->name('contact');
+
+Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
