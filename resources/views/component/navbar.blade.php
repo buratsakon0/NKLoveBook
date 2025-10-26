@@ -1,4 +1,4 @@
-<nav class="bg-gray-50 shadow-sm">
+<nav class="bg-white shadow-md">
   <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
     <!-- Left: Logo -->
     <div class="flex items-center gap-3">
@@ -9,6 +9,7 @@
     <!-- Center: Search -->
     <div class="flex-1 mx-8">
       <input type="text" placeholder="Search Books"
+        style="background-color: #f6f6f6;"
         class="w-full border border-gray-200 rounded-full px-5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400">
     </div>
 

@@ -56,14 +56,6 @@
           </p>
         </div>
 
-        <div class="bg-indigo-50 rounded-2xl border border-indigo-100 p-6 shadow-sm">
-          <p class="text-sm uppercase font-semibold text-indigo-700 tracking-wide">Shipping</p>
-          <p class="mt-3 text-sm text-gray-600 leading-6">
-            จัดส่งทั่วประเทศ ระยะเวลาการจัดส่งโดยประมาณ 2-5 วันทำการ
-            พร้อมบริการห่อของขวัญฟรีสำหรับทุกคำสั่งซื้อ
-            แจ้งเลขพัสดุทางอีเมลหรือไลน์ออฟฟิเชียลของร้าน.
-          </p>
-        </div>
       </div>
 
       <div class="mt-12">
