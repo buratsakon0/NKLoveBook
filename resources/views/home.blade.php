@@ -4,7 +4,7 @@
 
   <!-- 🟣 Banner Section -->
   <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:2rem; padding-bottom:2rem;">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 px-6">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 px-20">
       <div class="md:w-1/2">
         <h2 class="font-bold text-indigo-900 mb-6" style="font-size:3rem;">น้ำข้าวรักหนังสือ</h2>
         <p class="text-gray-700 mb-8" style="font-size:1.1rem; line-height:1.8;">
@@ -17,7 +17,7 @@
         </a>
       </div>
       <div>
-        <img src="{{ asset('images/homePicture.png') }}" style="width:750px; height:450px; object-fit:cover; margin-left: 100px;">
+        <img src="{{ asset('images/homePicture.png') }}" style="width:810px; height:510px; object-fit:cover; margin-left: 45px;">
       </div>
     </div>
   </section>
@@ -142,6 +142,28 @@
       from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
+
+    /* เพิ่มการเคลื่อนไหวของกรอบ */
+    .card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* เมื่อ hover ให้กรอบยกขึ้น */
+    .card:hover {
+      transform: translateY(-10px); /* ยกขึ้น 10px */
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    }
+
+    /* เพิ่มการเคลื่อนไหวของกรอบ */
+    .extra-categorys {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* เมื่อ hover ให้กรอบยกขึ้น */
+    .extra-categorys:hover {
+      transform: translateY(-10px); /* ยกขึ้น 10px */
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    }
   </style>
 
   <!-- 🟡 Best Seller Section -->
@@ -162,7 +184,7 @@
               : asset('images/manga.jpg');
             $authorName = optional($book->author)->AuthorName ?? 'Unknown Author';
           @endphp
-          <a href="{{ route('book.show', $book->BookID) }}" class="bg-white shadow-md rounded-lg overflow-hidden w-60 hover:shadow-lg transition-shadow">
+          <a href="{{ route('book.show', $book->BookID) }}" class="card bg-white shadow-md rounded-lg overflow-hidden w-60 hover:shadow-lg transition-shadow">
             <img src="{{ $coverImage }}" alt="{{ $book->BookName }} cover" class="w-full h-64 object-cover">
             <div class="p-4 text-center">
               <h4 class="font-semibold text-indigo-900">{{ $book->BookName }}</h4>
