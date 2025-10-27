@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ReviewController;
 
 
 // หน้าแรก
@@ -59,3 +60,7 @@ Route::get('/cart', [CartController::class, 'showCart'])->name('cart.index');
 Route::put('/cart/update/{productId}', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/update/{productId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+
+// Review routes
+Route::post('/book/{bookId}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
+Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->name('review.destroy')->middleware('auth');

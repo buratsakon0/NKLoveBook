@@ -16,6 +16,17 @@
 
   <section class="bg-gray-50 py-12">
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-3xl p-10">
+      <!-- @if(session('success'))
+        <div class="mb-5 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
+          {{ session('success') }}
+        </div>
+      @endif
+      
+      @if(session('error'))
+        <div class="mb-5 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+          {{ session('error') }}
+        </div>
+      @endif -->
       <div class="grid lg:grid-cols-[340px,1fr] gap-12">
         <div class="bg-gray-100 rounded-2xl p-6 flex items-center justify-center shadow-inner">
           <img src="{{ $coverImage }}" alt="{{ $book->BookName }} cover"
@@ -83,23 +94,57 @@
             <div class="flex items-center gap-4">
               <div class="text-4xl font-bold text-indigo-900 leading-none">{{ $averageDisplay }}</div>
               <div class="flex flex-col gap-1">
-                <div class="text-orange-500">
-                  @for ($i = 1; $i <= 5; $i++)
-                    @if($averageRating !== null && $averageRating >= $i)
-                      <i class="fa-solid fa-star"></i>
-                    @elseif($averageRating !== null && $averageRating >= ($i - 0.5))
-                      <i class="fa-solid fa-star-half-stroke"></i>
-                    @else
-                      <i class="fa-regular fa-star"></i>
-                    @endif
-                  @endfor
-                </div>
-                <span class="text-xs text-gray-500 uppercase tracking-widest">
-                  {{ $totalReviews ? 'Average Rating' : 'No Ratings Yet' }}
-                </span>
-                @if($totalReviews)
-                  <span class="text-[0.65rem] text-gray-400">{{ $totalReviews }} รีวิว</span>
-                @endif
+                @auth
+                  @if($userReview)
+                    <!-- Show user's rating -->
+                    <div class="text-orange-500">
+                      @for ($i = 1; $i <= 5; $i++)
+                        @if($i <= $userReview->Score)
+                          <i class="fa-solid fa-star"></i>
+                        @else
+                          <i class="fa-regular fa-star"></i>
+                        @endif
+                      @endfor
+                    </div>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">Your Rating</span>
+                    <form action="{{ route('review.destroy', $book->BookID) }}" method="POST" class="inline">
+                      @csrf
+                      @method('DELETE')
+                      <button type="submit" class="text-red-500 hover:text-red-700 text-xs" 
+                        onclick="return confirm('Delete your review?')">
+                        Delete Review
+                      </button>
+                    </form>
+                  @else
+                    <!-- Clickable stars for rating -->
+                    <div class="text-gray-300" id="rating-stars">
+                      @for ($i = 1; $i <= 5; $i++)
+                        <i class="fa-regular fa-star cursor-pointer hover:text-orange-500 transition-colors" 
+                           data-rating="{{ $i }}" onclick="submitRating({{ $i }})"></i>
+                      @endfor
+                    </div>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">Click to Rate</span>
+                  @endif
+                @else
+                  <!-- Show average rating for non-logged users -->
+                  <div class="text-orange-500">
+                    @for ($i = 1; $i <= 5; $i++)
+                      @if($averageRating !== null && $averageRating >= $i)
+                        <i class="fa-solid fa-star"></i>
+                      @elseif($averageRating !== null && $averageRating >= ($i - 0.5))
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                      @else
+                        <i class="fa-regular fa-star"></i>
+                      @endif
+                    @endfor
+                  </div>
+                  <span class="text-xs text-gray-500 uppercase tracking-widest">
+                    {{ $totalReviews ? 'Average Rating' : 'No Ratings Yet' }}
+                  </span>
+                  @if($totalReviews)
+                    <span class="text-[0.65rem] text-gray-400">{{ $totalReviews }} รีวิว</span>
+                  @endif
+                @endauth
               </div>
             </div>
 
@@ -134,7 +179,15 @@
     </div>
   </section>
 
+  <!-- Hidden form for rating submission -->
+  <form id="rating-form" action="{{ route('review.store', $book->BookID) }}" method="POST" style="display: none;">
+    @csrf
+    <input type="hidden" name="score" id="rating-score" value="">
+    <input type="hidden" name="comment" value="">
+  </form>
+
   <script>
+    // Quantity controls
     document.getElementById("increase").addEventListener("click", function() {
       let quantityElement = document.getElementById("quantity");
       let currentQuantity = parseInt(quantityElement.textContent);
@@ -155,6 +208,36 @@
         document.getElementById("cartQuantity").value = currentQuantity - 1;
         document.getElementById("cartQuantityBuy").value = currentQuantity - 1;
       }
+    });
+
+    // Star rating functionality
+    function submitRating(rating) {
+      document.getElementById('rating-score').value = rating;
+      document.getElementById('rating-form').submit();
+    }
+
+    // Add hover effects for clickable stars
+    document.addEventListener('DOMContentLoaded', function() {
+      const stars = document.querySelectorAll('#rating-stars i');
+      
+      stars.forEach((star, index) => {
+        star.addEventListener('mouseenter', function() {
+          // Highlight stars up to hovered star
+          for (let i = 0; i <= index; i++) {
+            stars[i].classList.remove('fa-regular');
+            stars[i].classList.add('fa-solid');
+            stars[i].classList.add('text-orange-500');
+          }
+        });
+        
+        star.addEventListener('mouseleave', function() {
+          // Reset all stars
+          stars.forEach(s => {
+            s.classList.remove('fa-solid', 'text-orange-500');
+            s.classList.add('fa-regular');
+          });
+        });
+      });
     });
   </script>
 

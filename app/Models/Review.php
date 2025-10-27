@@ -10,6 +10,8 @@ class Review extends Model
     use HasFactory;
 
     protected $table = 'reviews';
+    protected $primaryKey = ['BookID', 'UserID'];
+    public $incrementing = false;
     protected $fillable = ['BookID', 'UserID', 'Score', 'Comment'];
     public $timestamps = true;
 
