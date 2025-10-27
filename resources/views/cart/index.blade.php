@@ -2,12 +2,19 @@
 
 @section('content')
 <div class="container mx-auto mt-12 px-4">
-  <h1 class="text-3xl font-bold text-center text-indigo-900 mb-6 flex items-center justify-center gap-2">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 6.45A2 2 0 007.63 22h8.74a2 2 0 001.98-2.55L17 13M7 13l1.35-6.45A2 2 0 0110.37 4h3.26a2 2 0 011.98 2.55L17 13" />
+    <h1 class="text-3xl font-bold text-center text-indigo-900 mb-6 flex items-center justify-center gap-2">
+    <!-- โลโก้รถเข็น -->
+    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" 
+        viewBox="0 0 24 24" stroke="none" class="w-8 h-8 text-indigo-900">
+      <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 
+              0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zm-9.83-2
+              h10.25c.75 0 1.41-.41 1.75-1.03L21 6H6.21l-.94-2H1v2h3l3.6 
+              7.59-1.35 2.44C6.52 16.37 6 17.28 6 18v1h2v-1c0-.55.45-1 
+              1-1h10v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 14h8.45
+              c.75 0 1.41-.41 1.75-1.03L21 6H6.21l-1.04-2z"/>
     </svg>
-    Cart
+
+    CART
   </h1>
 
   @if(!empty($cart))
