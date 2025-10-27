@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\CheckoutController;
 
 
 // หน้าแรก
@@ -73,3 +74,8 @@ Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->na
 Route::post('/wishlist/{book}', [WishlistController::class, 'store'])->name('wishlist.store');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::delete('/wishlist/{book}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+// Route สำหรับ Checkout (ต้องล็อกอินก่อนถึงเข้าได้)
+Route::get('/checkout', [CheckoutController::class, 'index'])
+    ->name('checkout')
+    ->middleware('auth');

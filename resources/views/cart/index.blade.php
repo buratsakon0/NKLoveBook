@@ -79,7 +79,7 @@
           Continue Shopping
         </button>
 
-        <a href="#" class="flex items-center bg-orange-500 text-white font-medium py-2 px-6 rounded hover:bg-orange-600 transition">
+        <a href="{{ route('checkout') }}" class="flex items-center bg-orange-500 text-white font-medium py-2 px-6 rounded hover:bg-orange-600 transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-3.314 0-6 2.686-6 6v2h12v-2c0-3.314-2.686-6-6-6zM5 14v2a2 2 0 002 2h10a2 2 0 002-2v-2M12 8V4m0 0a4 4 0 100 8"/>
           </svg>
