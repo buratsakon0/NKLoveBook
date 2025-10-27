@@ -164,18 +164,18 @@
   {{-- 🛒 Cart: ต้อง login ก่อน --}}
   @auth
     <a href="{{ route('cart.index') }}" class="relative">
-      <i class="fa fa-shopping-cart text-gray-700 text-xl"></i>
+      <i class="fa fa-shopping-cart text-indigo-800 text-xl"></i>
       <span id="cartCount"
             class="absolute -top-2 -right-2 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full">
-        {{ count(session('cart', [])) }}
+        {{ $cartCount }}
       </span>
     </a>
 
   @else
-    <button onclick="window.location.href='{{ route('login') }}'" class="flex items-center gap-1 text-indigo-800 hover:text-indigo-500">
-      <i class="fa fa-shopping-cart"></i> CART
-      <span id="cartCount">{{ count(session('cart', [])) }}</span>
-    </button>
+    <a href="{{ route('login') }}" class="relative">
+      <i class="fa fa-shopping-cart text-indigo-800 text-xl"></i>
+      
+    </a>
   @endauth
 
   <span>|</span>
