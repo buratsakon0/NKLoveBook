@@ -36,7 +36,7 @@ class WishlistController extends Controller
                 $product['image'] = $this->normalizeStoredImagePath($product['image']);
             }
         }
-        unset($product);
+        unset($product); // ป้องกัน reference ค้าง
 
         session()->put('cart', $cart);
 
@@ -44,7 +44,7 @@ class WishlistController extends Controller
             return $product['price'] * $product['quantity'];
         }, $cart));
 
-        return view('wishlist.index', [
+        return view('cart.index', [
             'cart' => $cart,
             'totalPrice' => $totalPrice,
         ]);

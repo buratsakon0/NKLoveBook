@@ -243,55 +243,48 @@
     updateCart(quantity, true);  // แสดง alert เฉพาะเมื่อคลิก Add to Cart
 
   });
- function toggleWishlist(bookId) {
+  // ฟังก์ชัน toggleWishlist ใน JavaScript
+function toggleWishlist(bookId) {
     const heartIcon = document.getElementById(`heart-icon-${bookId}`);
-    const isInWishlist = heartIcon.classList.contains('fa-heart-solid'); // ตรวจสอบว่าไอคอนเป็นสีแดงหรือไม่
+    
+    // ตรวจสอบสถานะปัจจุบันของหัวใจ
+    const isAddedToWishlist = heartIcon.classList.contains('text-red-500');
 
-    if (isInWishlist) {
+    if (isAddedToWishlist) {
         // ลบออกจาก Wishlist
-        heartIcon.classList.remove('fa-heart-solid');
-        heartIcon.classList.add('fa-heart');
-        removeFromWishlist(bookId);
+        fetch(`/wishlist/remove/${bookId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                heartIcon.classList.remove('text-red-500');  // เปลี่ยนหัวใจกลับเป็นสีเทา
+                heartIcon.classList.add('text-gray-400');   // เปลี่ยนหัวใจกลับเป็นสีเทา
+            }
+        });
     } else {
-        // เพิ่มลงใน Wishlist
-        heartIcon.classList.remove('fa-heart');
-        heartIcon.classList.add('fa-heart-solid');
-        addToWishlist(bookId);
+        // เพิ่มไปที่ Wishlist
+        fetch(`/wishlist/add/${bookId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                heartIcon.classList.add('text-red-500');  // เปลี่ยนหัวใจเป็นสีแดง
+            }
+        });
     }
 }
 
-function addToWishlist(bookId) {
-    fetch(`/wishlist/add/${bookId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Added to Wishlist');
-        }
-    });
-}
-
-function removeFromWishlist(bookId) {
-    fetch(`/wishlist/remove/${bookId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Removed from Wishlist');
-        }
-    });
-}
-
+</script>
 
 
 @endsection

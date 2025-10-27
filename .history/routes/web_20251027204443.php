@@ -76,9 +76,10 @@ Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->na
 
 
 //Wishlist
+Route::post('/wishlist/add/{book}', [WishlistController::class, 'store'])->name('wishlist.add');
+Route::post('/wishlist/remove/{book}', [WishlistController::class, 'remove'])->name('wishlist.remove');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-Route::post('/wishlist/add/{bookId}', [WishlistController::class, 'store'])->name('wishlist.add');
-Route::post('/wishlist/remove/{bookId}', [WishlistController::class, 'destroy'])->name('wishlist.remove');
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
 
 // เส้นทางสำหรับการ submit ข้อมูลใน Checkout

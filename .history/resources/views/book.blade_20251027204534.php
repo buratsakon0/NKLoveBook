@@ -22,18 +22,11 @@
           <img src="{{ $coverImage }}" alt="{{ $book->BookName }} cover"
             class="w-full max-w-xs rounded-lg shadow-lg">
         </div>
-<div class="flex justify-between items-center mb-4">
-    <h1 class="text-3xl font-bold text-indigo-900 leading-tight">{{ $book->BookName }}</h1>
-    <button 
-        onclick="toggleWishlist({{ $book->id }})" 
-        id="wishlist-{{ $book->id }}" 
-        class="text-2xl text-gray-400 transition-colors duration-300 w-14 h-14 ml-4">
-        <i id="heart-icon-{{ $book->id }}" class="fa fa-heart text-4xl"></i>
-    </button>
-</div>
+
         <div class="flex flex-col gap-6">
           <div>
-           
+            <h1 class="text-3xl font-bold text-indigo-900 leading-tight">{{ $book->BookName }}</h1>
+
             <div class="mt-4 text-sm text-gray-600 space-y-1">
               <p><span class="font-semibold text-gray-900">ผู้เขียน:</span> {{ $authorName }}</p>
               <p><span class="font-semibold text-gray-900">สำนักพิมพ์:</span> {{ $publisherName }}</p>
@@ -243,55 +236,7 @@
     updateCart(quantity, true);  // แสดง alert เฉพาะเมื่อคลิก Add to Cart
 
   });
- function toggleWishlist(bookId) {
-    const heartIcon = document.getElementById(`heart-icon-${bookId}`);
-    const isInWishlist = heartIcon.classList.contains('fa-heart-solid'); // ตรวจสอบว่าไอคอนเป็นสีแดงหรือไม่
-
-    if (isInWishlist) {
-        // ลบออกจาก Wishlist
-        heartIcon.classList.remove('fa-heart-solid');
-        heartIcon.classList.add('fa-heart');
-        removeFromWishlist(bookId);
-    } else {
-        // เพิ่มลงใน Wishlist
-        heartIcon.classList.remove('fa-heart');
-        heartIcon.classList.add('fa-heart-solid');
-        addToWishlist(bookId);
-    }
-}
-
-function addToWishlist(bookId) {
-    fetch(`/wishlist/add/${bookId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Added to Wishlist');
-        }
-    });
-}
-
-function removeFromWishlist(bookId) {
-    fetch(`/wishlist/remove/${bookId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            console.log('Removed from Wishlist');
-        }
-    });
-}
-
+</script>
 
 
 @endsection

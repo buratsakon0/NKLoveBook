@@ -26,6 +26,7 @@ class WishlistController extends Controller
         foreach ($cart as $productId => &$product) {
             $book = $books->get($productId);
             if ($book) {
+                $product['image'] = $this->resolveImagePath($book->cover_image);
                 $product['author'] = $book->author?->AuthorName ?? $product['author'] ?? 'UNKNOWN AUTHOR';
                 $product['name'] = $book->BookName;
                 $product['price'] = $book->Price;
@@ -36,7 +37,7 @@ class WishlistController extends Controller
                 $product['image'] = $this->normalizeStoredImagePath($product['image']);
             }
         }
-        unset($product);
+        unset($product); // ป้องกัน reference ค้าง
 
         session()->put('cart', $cart);
 
@@ -44,7 +45,7 @@ class WishlistController extends Controller
             return $product['price'] * $product['quantity'];
         }, $cart));
 
-        return view('wishlist.index', [
+        return view('cart.index', [
             'cart' => $cart,
             'totalPrice' => $totalPrice,
         ]);

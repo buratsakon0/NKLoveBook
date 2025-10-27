@@ -36,17 +36,10 @@ class WishlistController extends Controller
                 $product['image'] = $this->normalizeStoredImagePath($product['image']);
             }
         }
-        unset($product);
+        unset($product); // ป้องกัน reference ค้าง
 
         session()->put('cart', $cart);
 
-        $totalPrice = array_sum(array_map(function($product) {
-            return $product['price'] * $product['quantity'];
-        }, $cart));
-
-        return view('wishlist.index', [
-            'cart' => $cart,
-            'totalPrice' => $totalPrice,
-        ]);
+        
     }
 }
