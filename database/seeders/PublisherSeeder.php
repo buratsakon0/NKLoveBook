@@ -38,6 +38,16 @@ class PublisherSeeder extends Seeder
             ['PublisherName' => 'openbooks, สนพ.'],
             ['PublisherName' => 'อมรินทร์ How to'],
             ['PublisherName' => 'ไลฟ์พลัส Life+'],
+
+            // Travel
+            ['PublisherName' => 'dsin'],
+            ['PublisherName' => 'แจ่มใส'],
+            ['PublisherName' => 'วิช กรุ๊ป (ไทยแลนด์)'],
+            ['PublisherName' => 'Book Caff'],
+            ['PublisherName' => 'การท่องเที่ยวแห่งประเทศไทย'],
+            ['PublisherName' => 'Dplus Guide'],
+            ['PublisherName' => 'อมรินทร์ท่องโลก'],
+            ['PublisherName' => 'ธิงค์ บียอนด์ บุ๊คส์, บจก.'],
         ];
 
         foreach ($publishers as $publisher) {

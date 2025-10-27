@@ -48,6 +48,16 @@ class AuthorSeeder extends Seeder
             ['AuthorName' => 'ชิดชนก ทองใหญ่ ณ อยุธยา'],
             ['AuthorName' => 'นายแพทย์ธนีย์ ธนียวัน'],
             ['AuthorName' => 'ทิพาพรรณ ศิริเวชฎารักษ์,ปัญชัช ชั่งจันทร'],
+
+            // Travel
+            ['AuthorName' => 'dsin'],
+            ['AuthorName' => 'กองบรรณาธิการ แจ่มใส'],
+            ['AuthorName' => 'เอกชัย สุขวัฒนกูล'],
+            ['AuthorName' => 'B TRAVEL TEAM'],
+            ['AuthorName' => 'การท่องเที่ยวแห่งประเทศไทย'],
+            ['AuthorName' => 'Travelkanuman'],
+            ['AuthorName' => 'TWIN x TRAVEL'],
+            ['AuthorName' => 'นัฏนนเสนาแสง'],
         ];
 
         foreach ($authors as $author) {
