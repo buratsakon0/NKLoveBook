@@ -4,7 +4,8 @@
 <div class="container mx-auto mt-12 px-4">
   <h1 class="text-3xl font-bold text-center text-indigo-900 mb-6 flex items-center justify-center gap-2">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-900" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 6.45A2 2 0 007.63 22h8.74a2 2 0 001.98-2.55L17 13M7 13l1.35-6.45A2 2 0 0110.37 4h3.26a2 2 0 011.98 2.55L17 13" />
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+            d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.35 6.45A2 2 0 007.63 22h8.74a2 2 0 001.98-2.55L17 13M7 13l1.35-6.45A2 2 0 0110.37 4h3.26a2 2 0 011.98 2.55L17 13" />
     </svg>
     Cart
   </h1>
@@ -30,8 +31,7 @@
                   <p class="font-semibold text-indigo-900">{{ $product['name'] }}</p>
                   <p class="text-sm text-gray-500 mt-1 uppercase tracking-wide">
                     {{ $product['author'] ?? 'Unknown Author' }}
-                    </p>
-
+                  </p>
                 </div>
               </td>
               <td class="py-4 px-6">฿{{ number_format($product['price'], 2) }}</td>
@@ -49,7 +49,8 @@
                   @method('DELETE')
                   <button type="submit" class="text-gray-600 hover:text-red-600">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M1 7h22M10 3h4a1 1 0 011 1v1H9V4a1 1 0 011-1z"/>
                     </svg>
                   </button>
                 </form>
@@ -66,33 +67,28 @@
         </div>
       </div>
 
+      <!-- ปุ่มด้านล่าง -->
       <div class="flex justify-end items-center gap-4 px-6 py-4 border-t border-gray-200">
-        <button onclick="window.location.href='{{ route('home') }}'" class="flex items-center border border-orange-500 text-orange-500 font-medium py-2 px-6 rounded hover:bg-orange-50 transition">
+        <!-- ปุ่ม Continue Shopping -->
+        <button 
+          onclick="window.location.href='{{ route('home') }}'" 
+          class="flex items-center border border-orange-500 text-orange-500 font-medium py-2 px-6 rounded hover:bg-orange-50 transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M3 3v18m0-18l18 18"/>
           </svg>
           Continue Shopping
         </button>
 
-        <div class="flex justify-end items-center gap-4 px-6 py-4 border-t border-gray-200">
-  @auth
-        <!-- ถ้า login แล้วจะให้แสดงปุ่ม Checkout -->
-        <a href="{{ route('checkout') }}" class="flex items-center bg-orange-500 text-white font-medium py-2 px-6 rounded hover:bg-orange-600 transition">
+        <!-- ปุ่ม Checkout (ไม่ตรวจ login แล้ว) -->
+        <button 
+          onclick="window.location.href='{{ route('checkout') }}'" 
+          class="flex items-center bg-orange-500 text-white font-medium py-2 px-6 rounded hover:bg-orange-600 transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-3.314 0-6 2.686-6 6v2h12v-2c0-3.314-2.686-6-6-6zM5 14v2a2 2 0 002 2h10a2 2 0 002-2v-2M12 8V4m0 0a4 4 0 100 8"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                  d="M12 8c-3.314 0-6 2.686-6 6v2h12v-2c0-3.314-2.686-6-6-6zM5 14v2a2 2 0 002 2h10a2 2 0 002-2v-2M12 8V4m0 0a4 4 0 100 8"/>
           </svg>
           Checkout
-        </a>
-      @else
-        <!-- ถ้ายังไม่ได้ login แสดงปุ่มให้ไปหน้า login -->
-        <a href="{{ route('login') }}" class="flex items-center bg-orange-500 text-white font-medium py-2 px-6 rounded hover:bg-orange-600 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-3.314 0-6 2.686-6 6v2h12v-2c0-3.314-2.686-6-6-6zM5 14v2a2 2 0 002 2h10a2 2 0 002-2v-2M12 8V4m0 0a4 4 0 100 8"/>
-          </svg>
-          Login to Checkout
-        </a>
-      @endauth
-    </div>
+        </button>
       </div>
     </div>
   @else

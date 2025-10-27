@@ -83,22 +83,35 @@
             ฿ {{ number_format($book->Price, 2) }}
           </p>
 
-          <!-- ปุ่ม -->
-                  <div class="flex justify-center gap-3">
-          <!-- ปุ่ม Add to Cart -->
-          <button onclick="addToCart({{ $book->BookID }})"
-            class="flex items-center justify-center gap-2 bg-[#ED553B] text-white text-xs px-4 py-2 rounded shadow hover:bg-[#e94c2f] transition w-32">
-            <i class="fa fa-shopping-cart text-[0.8rem]"></i>
-            ADD TO CART
-          </button>
+        <div class="flex justify-center gap-3">
+          @auth
+            <!-- ✅ ถ้าล็อกอินแล้ว -->
+            <button onclick="addToCart({{ $book->BookID }})"
+              class="flex items-center justify-center gap-2 bg-[#ED553B] text-white text-xs px-4 py-2 rounded shadow hover:bg-[#e94c2f] transition w-32">
+              <i class="fa fa-shopping-cart text-[0.8rem]"></i>
+              ADD TO CART
+            </button>
 
-          <!-- ปุ่ม BUY (ไปที่หน้า Cart) -->
-          <button onclick="buyBook({{ $book->BookID }})"
-            class="flex items-center justify-center border border-[#ED553B] text-[#ED553B] text-xs px-4 py-2 rounded hover:bg-[#ED553B] hover:text-white transition w-20">
-            <i class="fa fa-credit-card text-[0.8rem] mr-1"></i>
-            BUY
-          </button>
-        </div>
+            <button onclick="buyBook({{ $book->BookID }})"
+              class="flex items-center justify-center border border-[#ED553B] text-[#ED553B] text-xs px-4 py-2 rounded hover:bg-[#ED553B] hover:text-white transition w-20">
+              <i class="fa fa-credit-card text-[0.8rem] mr-1"></i>
+              BUY
+            </button>
+          @else
+            <!-- 🚫 ถ้ายังไม่ได้ login -->
+            <button onclick="window.location.href='/login'"
+              class="flex items-center justify-center gap-2 bg-[#ED553B] text-white text-xs px-4 py-2 rounded shadow hover:bg-[#e94c2f] transition w-32">
+              <i class="fa fa-shopping-cart text-[0.8rem]"></i>
+              ADD TO CART
+            </button>
+
+            <button onclick="window.location.href='/login'"
+              class="flex items-center justify-center border border-[#ED553B] text-[#ED553B] text-xs px-4 py-2 rounded hover:bg-[#ED553B] hover:text-white transition w-20">
+              <i class="fa fa-credit-card text-[0.8rem] mr-1"></i>
+              BUY
+            </button>
+          @endauth
+      </div>
 
         </div>
       </div>

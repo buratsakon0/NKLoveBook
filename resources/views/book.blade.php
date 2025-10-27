@@ -51,32 +51,41 @@
           <p class="text-4xl font-bold text-orange-500">฿ {{ number_format($book->Price, 2) }}</p>
 
           <div class="flex flex-wrap items-center gap-5">
-            <div class="flex items-center border border-gray-200 rounded-full overflow-hidden bg-white shadow-sm">
-              <button id="decrease" class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">-</button>
-              <span id="quantity" class="px-6 py-2 text-lg font-semibold border-x border-gray-200">1</span>
-              <button id="increase" class="px-4 py-2 text-lg text-indigo-600 hover:bg-indigo-50">+</button>
-            </div>
+            @auth
+              <!-- ✅ ผู้ใช้ล็อกอินแล้ว -->
+              <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="quantity" id="cartQuantity" value="1">
+                    <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+                      <i class="fa fa-shopping-cart"></i>
+                      ADD TO CART
+                    </button>
+                  </form>
 
-            <!-- ฟอร์ม Add to Cart -->
-            <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
-              @csrf
-              <input type="hidden" name="quantity" id="cartQuantity" value="1">
-              <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
-                <i class="fa fa-shopping-cart"></i>
-                ADD TO CART
-              </button>
-            </form>
+                  <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="window.location.href='/cart'">
+                    @csrf
+                    <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
+                    <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                      <i class="fa fa-bolt"></i>
+                      BUY
+                    </button>
+                  </form>
+                @else
+                  <!-- 🚫 ผู้ใช้ยังไม่ได้ล็อกอิน -->
+                  <button onclick="window.location.href='/login'" 
+                    class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+                    <i class="fa fa-shopping-cart"></i>
+                    ADD TO CART
+                  </button>
 
-            <!-- ฟอร์ม Buy -->
-            <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
-              @csrf
-              <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
-              <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
-                <i class="fa fa-bolt"></i>
-                BUY
-              </button>
-            </form>
+                  <button onclick="window.location.href='/login'" 
+                    class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                    <i class="fa fa-bolt"></i>
+                    BUY
+                  </button>
+                @endauth
           </div>
+
         </div>
       </div>
 

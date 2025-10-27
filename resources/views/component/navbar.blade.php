@@ -143,33 +143,50 @@
       });
     </script>
 
-    <!-- Right: Icons -->
-    <div class="flex gap-5 text-sm font-medium text-indigo-800">
-    @auth
-        <!-- ✅ login แล้ว -->
-        <a href="{{ route('profile') }}" class="text-indigo-600 font-semibold">
-            {{ Auth::user()->Username }}
-        </a>
-    @else
-        <!-- ❌ ยังไม่ login -->
-        <a href="{{ route('login') }}" class="text-indigo-600 font-semibold">
-            ACCOUNT
-        </a>
-    @endauth
+  <!-- Right: Icons -->
+<div class="flex gap-5 text-sm font-medium text-indigo-800">
 
-    <span>|</span>
+  {{-- ✅ Profile / Account --}}
+  @auth
+    <a href="{{ route('profile') }}" class="text-indigo-600 font-semibold">
+      {{ Auth::user()->Username }}
+    </a>
+  @else
+    <a href="{{ route('login') }}" class="text-indigo-600 font-semibold">
+      ACCOUNT
+    </a>
+  @endauth
+
+  <span>|</span>
+
+  {{-- 🛒 Cart: ต้อง login ก่อน --}}
+  @auth
     <a href="{{ route('cart.index') }}" class="flex items-center gap-1 hover:text-indigo-500">
-        <i class="fa fa-shopping-cart"></i> CART
+      <i class="fa fa-shopping-cart"></i> CART
+      <span id="cartCount">{{ count(session('cart', [])) }}</span>
     </a>
-    <span id="cartCount">{{ count(session('cart', [])) }}</span>
+  @else
+    <button onclick="window.location.href='{{ route('login') }}'" class="flex items-center gap-1 text-indigo-800 hover:text-indigo-500">
+      <i class="fa fa-shopping-cart"></i> CART
+      <span id="cartCount">{{ count(session('cart', [])) }}</span>
+    </button>
+  @endauth
 
+  <span>|</span>
 
-    <span>|</span>
+  {{-- Wishlist: ต้อง login ก่อนเหมือนกัน --}}
+  @auth
     <a href="{{ route('wishlist.index') }}" class="flex items-center gap-1 hover:text-indigo-500">
-        <i class="fa fa-heart"></i> WISHLIST
+      <i class="fa fa-heart"></i> WISHLIST
     </a>
+  @else
+    <button onclick="window.location.href='{{ route('login') }}'" class="flex items-center gap-1 text-indigo-800 hover:text-indigo-500">
+      <i class="fa fa-heart"></i> WISHLIST
+    </button>
+  @endauth
 
 </div>
+
 
   </div>
 
