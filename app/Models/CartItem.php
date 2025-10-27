@@ -11,6 +11,8 @@ class CartItem extends Model
 
     protected $table = 'cart_items';
     protected $fillable = ['CartID', 'BookID', 'Quantity'];
+    protected $primaryKey = null;
+    public $incrementing = false;
     public $timestamps = false;
 
     public function cart() {
@@ -19,5 +21,11 @@ class CartItem extends Model
 
     public function book() {
         return $this->belongsTo(Book::class, 'BookID', 'BookID');
+    }
+
+    protected function setKeysForSaveQuery($query)
+    {
+        return $query->where('CartID', $this->getAttribute('CartID'))
+            ->where('BookID', $this->getAttribute('BookID'));
     }
 }
