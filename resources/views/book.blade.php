@@ -19,7 +19,6 @@
 
   <section class="bg-gray-50 py-12">
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-3xl p-10">
-
       <div class="grid lg:grid-cols-[340px,1fr] gap-12">
         <div class="bg-gray-100 rounded-2xl p-6 flex items-center justify-center shadow-inner">
           <img src="{{ $coverImage }}" alt="{{ $book->BookName }} cover"
@@ -385,6 +384,36 @@
   }
 
   window.toggleWishlist = toggleWishlist;
+
+    // Star rating functionality
+    function submitRating(rating) {
+      document.getElementById('rating-score').value = rating;
+      document.getElementById('rating-form').submit();
+    }
+
+    // Add hover effects for clickable stars
+    document.addEventListener('DOMContentLoaded', function() {
+      const stars = document.querySelectorAll('#rating-stars i');
+      
+      stars.forEach((star, index) => {
+        star.addEventListener('mouseenter', function() {
+          // Highlight stars up to hovered star
+          for (let i = 0; i <= index; i++) {
+            stars[i].classList.remove('fa-regular');
+            stars[i].classList.add('fa-solid');
+            stars[i].classList.add('text-orange-500');
+          }
+        });
+        
+        star.addEventListener('mouseleave', function() {
+          // Reset all stars
+          stars.forEach(s => {
+            s.classList.remove('fa-solid', 'text-orange-500');
+            s.classList.add('fa-regular');
+          });
+        });
+      });
+    });
   </script>
 
 
