@@ -29,6 +29,9 @@ class PublisherSeeder extends Seeder
             ['PublisherName' => 'Siam Inter Comics'],
             ['PublisherName' => 'Bongkoch Publishing'],
             ['PublisherName' => 'Dexpress Publishing'],
+
+            // Health & Lifestyle
+            ['PublisherName' => 'สวนเงินมีมา/Suan Ngoen Mi Ma'],
         ];
 
         foreach ($publishers as $publisher) {

@@ -36,6 +36,11 @@ class AuthorSeeder extends Seeder
             ['AuthorName' => 'Ryoko Kui'],
             ['AuthorName' => 'ยูโตะ ซาโนะ'],
             ['AuthorName' => 'อากิ ฮามาจิ'],
+
+            // Health & Lifestyle
+            ['AuthorName' => 'มือเขียน'],
+            ['AuthorName' => 'กองบก.นิตยสารบ้านและสวน'],
+            ['AuthorName' => 'วิรัชญา จารุจารีต'],
         ];
 
         foreach ($authors as $author) {
