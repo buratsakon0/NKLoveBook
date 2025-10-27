@@ -52,37 +52,37 @@
           <div class="flex flex-wrap items-center mt-4 gap-5">
             @auth
               <!-- ✅ ผู้ใช้ล็อกอินแล้ว -->
-              <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="quantity" id="cartQuantity" value="1">
-                    <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
-                      <i class="fa fa-shopping-cart"></i>
-                      ADD TO CART
-                    </button>
-                  </form>
+              <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="event.preventDefault(); addToCart({{ $book->BookID }});">
+                @csrf
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+                  <i class="fa fa-shopping-cart"></i>
+                  ADD TO CART
+                </button>
+              </form>
 
-                  <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="window.location.href='/cart'">
-                    @csrf
-                    <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
-                    <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
-                      <i class="fa fa-bolt"></i>
-                      BUY
-                    </button>
-                  </form>
-                @else
-                  <!-- 🚫 ผู้ใช้ยังไม่ได้ล็อกอิน -->
-                  <button onclick="window.location.href='/login'" 
-                    class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
-                    <i class="fa fa-shopping-cart"></i>
-                    ADD TO CART
-                  </button>
+              <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="window.location.href='/cart'">
+                @csrf
+                <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
+                <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                  <i class="fa fa-bolt"></i>
+                  BUY
+                </button>
+              </form>
+            @else
+              <!-- 🚫 ผู้ใช้ยังไม่ได้ล็อกอิน -->
+              <button onclick="showLoginAlert()" 
+                class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+                <i class="fa fa-shopping-cart"></i>
+                ADD TO CART
+              </button>
 
-                  <button onclick="window.location.href='/login'" 
-                    class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
-                    <i class="fa fa-bolt"></i>
-                    BUY
-                  </button>
-                @endauth
+              <button onclick="window.location.href='/login'" 
+                class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                <i class="fa fa-bolt"></i>
+                BUY
+              </button>
+            @endauth
           </div>
 
         </div>
@@ -196,233 +196,48 @@
     <input type="hidden" name="comment" value="">
   </form>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const increaseButton = document.getElementById('increase');
-    const decreaseButton = document.getElementById('decrease');
-    const quantityElement = document.getElementById('quantity');
-    const addToCartForm = document.querySelector('form[action="{{ route('cart.add', $book->BookID) }}"]');
-    const quantityInput = document.getElementById('cartQuantity');
-    const quantityBuyInput = document.getElementById('cartQuantityBuy');
+    // ฟังก์ชันเมื่อคลิก "Add to Cart"
+    function addToCart(bookId) {
+      let quantity = 1; // ค่า default
+      // เรียกใช้งานฟังก์ชันอัปเดตจำนวนสินค้าในตะกร้า
+      updateCartQuantity(bookId, quantity);
 
-    if (increaseButton && quantityElement && quantityInput && quantityBuyInput) {
-      increaseButton.addEventListener('click', () => {
-        const currentQuantity = parseInt(quantityElement.textContent, 10);
-        const newQuantity = currentQuantity + 1;
-
-        quantityElement.textContent = newQuantity;
-        quantityInput.value = newQuantity;
-        quantityBuyInput.value = newQuantity;
-      });
-    }
-
-    if (decreaseButton && quantityElement && quantityInput && quantityBuyInput) {
-      decreaseButton.addEventListener('click', () => {
-        const currentQuantity = parseInt(quantityElement.textContent, 10);
-        if (currentQuantity > 1) {
-          const newQuantity = currentQuantity - 1;
-
-          quantityElement.textContent = newQuantity;
-          quantityInput.value = newQuantity;
-          quantityBuyInput.value = newQuantity;
+      // แสดง SweetAlert2 แจ้งเตือนเมื่อเพิ่มหนังสือลงในตะกร้า
+      Swal.fire({
+        icon: 'success',
+        title: 'เพิ่มหนังสือใน Cart แล้ว',
+        text: 'สินค้าถูกเพิ่มลงใน Cart ของคุณเรียบร้อย',
+        showConfirmButton: false,
+        timer: 1500, // จะแสดง 1.5 วินาทีแล้วหายไป
+        customClass: {
+          popup: 'bg-green-500 text-white font-semibold p-4 rounded-lg', // ปรับสไตล์ป๊อปอัพ
         }
       });
     }
 
-    if (addToCartForm && quantityInput) {
-      addToCartForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        updateCart(quantityInput.value);
-      });
-    }
-  });
-
-  function updateCart(quantity) {
-    fetch('/update-cart', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-      },
-      body: JSON.stringify({
-        book_id: {{ $book->BookID }},
-        quantity: quantity
+    // ฟังก์ชันเพิ่มจำนวนสินค้า
+    function updateCartQuantity(bookId, quantity) {
+      fetch('/update-cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
+        body: JSON.stringify({
+          book_id: bookId,
+          quantity: quantity
+        })
       })
-    })
       .then(response => response.json())
       .then(data => {
-        const cartCount = document.getElementById('cartCount');
-        if (cartCount && typeof data.cartCount !== 'undefined') {
-          cartCount.textContent = data.cartCount;
-        }
+        // อัปเดตจำนวนในไอคอน Cart
+        document.getElementById('cartCount').textContent = data.cartCount;
       })
-      .catch(console.error);
-  }
-
-  function toggleWishlist(bookId) {
-    const heartIcon = document.getElementById(`heart-icon-${bookId}`);
-    const isInWishlist = heartIcon?.classList.contains('fa-solid');
-
-    if (!heartIcon) {
-      return;
+      .catch(console.error); // แสดง error ในกรณีที่มีปัญหา
     }
-
-    const promise = isInWishlist ? removeFromWishlist(bookId) : addToWishlist(bookId);
-
-    promise.then((successful) => {
-      if (!successful) {
-        return;
-      }
-
-      heartIcon.classList.toggle('fa-solid');
-      heartIcon.classList.toggle('fa-regular');
-      heartIcon.classList.toggle('text-red-500');
-      heartIcon.classList.toggle('text-gray-300');
-    });
-  }
-
-  function addToWishlist(bookId) {
-    return wishlistRequest(`/wishlist/add/${bookId}`, 'POST', ['success', 'exists']);
-  }
-
-  function removeFromWishlist(bookId) {
-    return wishlistRequest(`/wishlist/remove/${bookId}`, 'DELETE', ['success', 'not_found']);
-  }
-
-  function wishlistRequest(url, method, successStatuses = ['success']) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-    if (!csrfToken) {
-      console.error('CSRF token not found in document meta.');
-      return Promise.resolve(false);
-    }
-
-    const hasBody = ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase());
-
-    return fetch(url, {
-      method,
-      credentials: 'same-origin',
-      headers: {
-        'Accept': 'application/json',
-        'X-CSRF-TOKEN': csrfToken,
-        'X-Requested-With': 'XMLHttpRequest',
-        ...(hasBody ? { 'Content-Type': 'application/json' } : {})
-      },
-      ...(hasBody ? { body: JSON.stringify({}) } : {})
-    })
-      .then(response => {
-        if (response.redirected && response.url.includes('/login')) {
-          window.location.href = response.url;
-          return null;
-        }
-
-        if (response.status === 401) {
-          window.location.href = '/login';
-          return null;
-        }
-
-        const contentType = response.headers.get('content-type') || '';
-        if (contentType.includes('application/json')) {
-          return response.json();
-        }
-
-        return response.text().then(text => {
-          console.warn('Unexpected wishlist response:', text);
-          return null;
-        });
-      })
-      .then(data => {
-        if (!data) {
-          return false;
-        }
-
-        if (successStatuses.includes(data.status)) {
-          if (data.message) {
-            showWishlistToast(data.message, 'success');
-          }
-          return true;
-        }
-
-        showWishlistToast(data.message ?? 'ไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง', 'error');
-        return false;
-      })
-      .catch(error => {
-        console.error('Wishlist request error:', error);
-        showWishlistToast('เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
-        return false;
-      });
-  }
-
-  function showWishlistToast(message, type = 'info') {
-    if (!message) {
-      return;
-    }
-
-    const toast = document.createElement('div');
-    toast.textContent = message;
-    toast.style.position = 'fixed';
-    toast.style.top = '1.5rem';
-    toast.style.right = '1.5rem';
-    toast.style.zIndex = '9999';
-    toast.style.padding = '0.75rem 1.25rem';
-    toast.style.borderRadius = '0.75rem';
-    toast.style.boxShadow = '0 10px 18px rgba(15, 23, 42, 0.15)';
-    toast.style.fontSize = '0.95rem';
-    toast.style.fontWeight = '600';
-    toast.style.color = '#ffffff';
-    toast.style.transition = 'opacity 0.5s ease';
-
-    if (type === 'success') {
-      toast.style.backgroundColor = '#22c55e';
-    } else if (type === 'error') {
-      toast.style.backgroundColor = '#ef4444';
-    } else {
-      toast.style.backgroundColor = '#4f46e5';
-    }
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-      toast.style.opacity = '0';
-    }, 2200);
-
-    setTimeout(() => {
-      toast.remove();
-    }, 2700);
-  }
-
-  window.toggleWishlist = toggleWishlist;
-
-    // Star rating functionality
-    function submitRating(rating) {
-      document.getElementById('rating-score').value = rating;
-      document.getElementById('rating-form').submit();
-    }
-
-    // Add hover effects for clickable stars
-    document.addEventListener('DOMContentLoaded', function() {
-      const stars = document.querySelectorAll('#rating-stars i');
-      
-      stars.forEach((star, index) => {
-        star.addEventListener('mouseenter', function() {
-          // Highlight stars up to hovered star
-          for (let i = 0; i <= index; i++) {
-            stars[i].classList.remove('fa-regular');
-            stars[i].classList.add('fa-solid');
-            stars[i].classList.add('text-orange-500');
-          }
-        });
-        
-        star.addEventListener('mouseleave', function() {
-          // Reset all stars
-          stars.forEach(s => {
-            s.classList.remove('fa-solid', 'text-orange-500');
-            s.classList.add('fa-regular');
-          });
-        });
-      });
-    });
   </script>
-
 
 @endsection
