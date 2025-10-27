@@ -11,11 +11,6 @@
 
   @if(!empty($cart))
     <div class="bg-white shadow-md rounded-lg border border-gray-200">
-      <div class="p-4 bg-gray-100 flex items-center font-semibold text-lg border-b border-gray-200">
-        <input type="checkbox" checked class="accent-orange-500 mr-2">
-        All Items
-      </div>
-
       <table class="w-full text-left border-collapse">
         <thead class="border-b border-gray-300 text-gray-600">
           <tr>
