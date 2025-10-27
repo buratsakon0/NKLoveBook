@@ -187,58 +187,66 @@
   </form>
 
   <script>
-    // Quantity controls
-    document.getElementById("increase").addEventListener("click", function() {
-      let quantityElement = document.getElementById("quantity");
-      let currentQuantity = parseInt(quantityElement.textContent);
-      quantityElement.textContent = currentQuantity + 1;
+  // เพิ่มจำนวนสินค้า
+  document.getElementById("increase").addEventListener("click", function() {
+    let quantityElement = document.getElementById("quantity");
+    let currentQuantity = parseInt(quantityElement.textContent);
+    let newQuantity = currentQuantity + 1;
+
+    // อัปเดตจำนวนที่แสดง
+    quantityElement.textContent = newQuantity;
+
+    // อัปเดตค่าใน hidden input สำหรับทั้งฟอร์ม
+    document.getElementById("cartQuantity").value = newQuantity;
+    document.getElementById("cartQuantityBuy").value = newQuantity;
+
+  });
+
+  // ลดจำนวนสินค้า
+  document.getElementById("decrease").addEventListener("click", function() {
+    let quantityElement = document.getElementById("quantity");
+    let currentQuantity = parseInt(quantityElement.textContent);
+    if (currentQuantity > 1) {
+      let newQuantity = currentQuantity - 1;
+      quantityElement.textContent = newQuantity;
 
       // อัปเดตค่าใน hidden input สำหรับทั้งฟอร์ม
-      document.getElementById("cartQuantity").value = currentQuantity + 1;
-      document.getElementById("cartQuantityBuy").value = currentQuantity + 1;
-    });
+      document.getElementById("cartQuantity").value = newQuantity;
+      document.getElementById("cartQuantityBuy").value = newQuantity;
 
-    document.getElementById("decrease").addEventListener("click", function() {
-      let quantityElement = document.getElementById("quantity");
-      let currentQuantity = parseInt(quantityElement.textContent);
-      if (currentQuantity > 1) {
-        quantityElement.textContent = currentQuantity - 1;
-
-        // อัปเดตค่าใน hidden input สำหรับทั้งฟอร์ม
-        document.getElementById("cartQuantity").value = currentQuantity - 1;
-        document.getElementById("cartQuantityBuy").value = currentQuantity - 1;
-      }
-    });
-
-    // Star rating functionality
-    function submitRating(rating) {
-      document.getElementById('rating-score').value = rating;
-      document.getElementById('rating-form').submit();
     }
+  });
 
-    // Add hover effects for clickable stars
-    document.addEventListener('DOMContentLoaded', function() {
-      const stars = document.querySelectorAll('#rating-stars i');
-      
-      stars.forEach((star, index) => {
-        star.addEventListener('mouseenter', function() {
-          // Highlight stars up to hovered star
-          for (let i = 0; i <= index; i++) {
-            stars[i].classList.remove('fa-regular');
-            stars[i].classList.add('fa-solid');
-            stars[i].classList.add('text-orange-500');
-          }
-        });
-        
-        star.addEventListener('mouseleave', function() {
-          // Reset all stars
-          stars.forEach(s => {
-            s.classList.remove('fa-solid', 'text-orange-500');
-            s.classList.add('fa-regular');
-          });
-        });
-      });
+  // ฟังก์ชันสำหรับอัปเดต Cart ไอคอน
+  function updateCart(quantity, showAlert) {
+    fetch('/update-cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+      },
+      body: JSON.stringify({
+        book_id: {{ $book->BookID }},
+        quantity: quantity
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // อัปเดตจำนวนในไอคอน Cart
+      document.getElementById('cartCount').textContent = data.cartCount;
     });
-  </script>
+  }
+
+  // ฟังก์ชันเมื่อคลิก "Add to Cart"
+  const addToCartForm = document.querySelector('form[action="{{ route('cart.add', $book->BookID) }}"]');
+  addToCartForm.addEventListener('submit', function(event) {
+    event.preventDefault(); // หยุดการส่งฟอร์มปกติ
+
+    let quantity = document.getElementById("cartQuantity").value;
+    updateCart(quantity, true);  // แสดง alert เฉพาะเมื่อคลิก Add to Cart
+
+  });
+</script>
+
 
 @endsection

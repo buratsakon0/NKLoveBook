@@ -168,4 +168,28 @@ class CartController extends Controller
         return asset($cleanPath);
     }
 
+   public function updateCart(Request $request)
+    {
+        $cart = session()->get('cart', []);
+        $bookId = $request->input('book_id');
+        $quantity = $request->input('quantity');
+
+        // ตรวจสอบว่าใน Cart มีสินค้านี้อยู่แล้วหรือไม่
+        if (isset($cart[$bookId])) {
+            $cart[$bookId]['quantity'] = $quantity;  // อัปเดตจำนวนสินค้า
+        } else {
+            // ถ้าไม่มีสินค้าใน Cart, เพิ่มสินค้าใหม่
+            $cart[$bookId] = [
+                'book_name' => $request->input('book_name'),
+                'quantity' => $quantity,
+                'price' => $request->input('price')
+            ];
+        }
+
+        session()->put('cart', $cart);
+
+        // คืนค่าจำนวนสินค้าทั้งหมดใน Cart
+        return response()->json(['cartCount' => count($cart)]);
+    }
+
 }

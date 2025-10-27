@@ -61,6 +61,8 @@ Route::get('/cart', [CartController::class, 'showCart'])->name('cart.index');
 Route::put('/cart/update/{productId}', [CartController::class, 'updateCart'])->name('cart.update');
 Route::post('/cart/update/{productId}', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/update-cart', [CartController::class, 'updateCart']);
+
 
 // Review routes
 Route::post('/book/{bookId}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');

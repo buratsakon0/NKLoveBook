@@ -40,27 +40,22 @@
           </p>
 
           <!-- ปุ่ม -->
-          <div class="flex justify-center gap-3">
-            <!-- ปุ่ม Add to Cart -->
-            <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
-              @csrf
-              <button
-                class="flex items-center justify-center gap-2 bg-[#ED553B] text-white text-xs px-4 py-2 rounded shadow hover:bg-[#e94c2f] transition w-32">
-                <i class="fa fa-shopping-cart text-[0.8rem]"></i>
-                ADD TO CART
-              </button>
-            </form>
+                  <div class="flex justify-center gap-3">
+          <!-- ปุ่ม Add to Cart -->
+          <button onclick="addToCart({{ $book->BookID }})"
+            class="flex items-center justify-center gap-2 bg-[#ED553B] text-white text-xs px-4 py-2 rounded shadow hover:bg-[#e94c2f] transition w-32">
+            <i class="fa fa-shopping-cart text-[0.8rem]"></i>
+            ADD TO CART
+          </button>
 
-            <!-- ปุ่ม BUY (ไปที่หน้า Cart) -->
-            <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
-              @csrf
-              <button
-                class="flex items-center justify-center border border-[#ED553B] text-[#ED553B] text-xs px-4 py-2 rounded hover:bg-[#ED553B] hover:text-white transition w-20">
-                <i class="fa fa-credit-card text-[0.8rem] mr-1"></i>
-                BUY
-              </button>
-            </form>
-          </div>
+          <!-- ปุ่ม BUY (ไปที่หน้า Cart) -->
+          <button onclick="buyBook({{ $book->BookID }})"
+            class="flex items-center justify-center border border-[#ED553B] text-[#ED553B] text-xs px-4 py-2 rounded hover:bg-[#ED553B] hover:text-white transition w-20">
+            <i class="fa fa-credit-card text-[0.8rem] mr-1"></i>
+            BUY
+          </button>
+        </div>
+
         </div>
       </div>
     @endforeach
@@ -75,5 +70,41 @@
     <p class="text-center text-gray-500 mt-10">ยังไม่มีหนังสือในหมวดนี้</p>
   @endif
 </section>
+
+<script>
+  // เพิ่มจำนวนสินค้า
+  function updateCartQuantity(bookId, quantity) {
+    fetch('/update-cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+      },
+      body: JSON.stringify({
+        book_id: bookId,
+        quantity: quantity
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // อัปเดตจำนวนในไอคอน Cart
+      document.getElementById('cartCount').textContent = data.cartCount;
+    });
+  }
+
+  // ฟังก์ชันเมื่อคลิก "Add to Cart"
+  function addToCart(bookId) {
+    let quantity = 1; // ค่า default
+    updateCartQuantity(bookId, quantity);
+  }
+
+  // ฟังก์ชันเมื่อคลิก "Buy"
+  function buyBook(bookId) {
+    let quantity = 1; // ค่า default
+    updateCartQuantity(bookId, quantity);
+    window.location.href = "/cart"; // ไปหน้า Cart
+  }
+</script>
+
 
 @endsection
