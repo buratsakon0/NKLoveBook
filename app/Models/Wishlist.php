@@ -6,10 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Wishlist extends Model
 {
-    // ตั้งชื่อ table ให้ตรงกับในฐานข้อมูล
     protected $table = 'wishlists';
+    protected $primaryKey = 'WishListID';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
-    // กำหนดความสัมพันธ์กับ User และ Book
+    protected $fillable = [
+        'UserID',
+        'BookID',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'UserID');
@@ -17,6 +23,7 @@ class Wishlist extends Model
 
     public function book()
     {
-        return $this->belongsTo(Book::class, 'BookID');
+        return $this->belongsTo(Book::class, 'BookID', 'BookID')
+            ->withDefault();
     }
 }

@@ -75,10 +75,12 @@ Route::post('/book/{bookId}/review', [ReviewController::class, 'store'])->name('
 Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->name('review.destroy')->middleware('auth');
 
 
-//Wishlist
-Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
-Route::post('/wishlist/add/{bookId}', [WishlistController::class, 'store'])->name('wishlist.add');
-Route::post('/wishlist/remove/{bookId}', [WishlistController::class, 'destroy'])->name('wishlist.remove');
+// Wishlist
+Route::middleware('auth')->group(function () {
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/add/{bookId}', [WishlistController::class, 'store'])->name('wishlist.add');
+    Route::delete('/wishlist/remove/{bookId}', [WishlistController::class, 'destroy'])->name('wishlist.remove');
+});
 
 
 // เส้นทางสำหรับการ submit ข้อมูลใน Checkout

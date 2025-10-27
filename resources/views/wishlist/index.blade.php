@@ -1,49 +1,64 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto mt-12 px-4">
-  <h1 class="text-3xl font-bold text-center text-indigo-900 mb-6 flex items-center justify-center gap-2">
-    <svg width="50px" height="50px" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-      <path d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z"/>
+<div class="max-w-5xl mx-auto px-6 py-12">
+  <div class="flex items-center justify-center gap-4 text-indigo-900 mb-10">
+    <svg class="w-10 h-10" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z" />
     </svg>
-    My Wishlist
-  </h1>
+    <h1 class="text-3xl font-bold uppercase tracking-wide">My Wishlist</h1>
+  </div>
 
-  @if(!empty($cart))
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      @foreach($cart as $productId => $product)
-      <div class="flex flex-col bg-white shadow-md rounded-lg border border-gray-200 p-4">
-        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="w-full h-64 object-cover rounded-md mb-4">
-        <div class="flex flex-col flex-grow">
-          <p class="font-semibold text-indigo-900 text-center">{{ $product['name'] }}</p>
-          <p class="text-sm text-gray-500 text-center">{{ $product['author'] ?? 'Unknown Author' }}</p>
-          <p class="text-gray-600 text-center mt-2">฿{{ number_format($product['price'], 2) }}</p>
-        </div>
-        <div class="flex justify-between mt-4">
-          <form action="{{ route('cart.remove', $productId) }}" method="POST" onsubmit="return confirm('Remove this item?')">
+  @if (session('success'))
+    <div class="mb-6 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+      {{ session('success') }}
+    </div>
+  @elseif (session('info'))
+    <div class="mb-6 rounded-xl border border-blue-200 bg-blue-50 px-4 py-3 text-blue-800">
+      {{ session('info') }}
+    </div>
+  @elseif (session('error'))
+    <div class="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-red-800">
+      {{ session('error') }}
+    </div>
+  @endif
+
+  @if ($wishlistItems->isEmpty())
+    <p class="mt-10 text-center text-lg text-gray-500">ยังไม่มีสินค้าใน Wishlist ของคุณ</p>
+  @else
+    <div class="flex flex-col gap-6">
+      @foreach ($wishlistItems as $item)
+        @php($book = $item->book)
+        <div class="flex flex-col gap-6 rounded-[28px] border-2 border-indigo-800 bg-white px-6 py-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
+          <div class="flex w-full flex-1 items-center gap-6">
+            <form action="{{ route('wishlist.remove', $book->BookID) }}" method="POST" class="flex-shrink-0">
+              @csrf
+              @method('DELETE')
+              <button type="submit" class="flex h-12 w-12 items-center justify-center rounded-full border border-indigo-200 text-indigo-800 transition hover:bg-red-50 hover:text-red-600" aria-label="Remove from wishlist">
+                <i class="fa-regular fa-trash-can text-2xl"></i>
+              </button>
+            </form>
+
+            <img src="{{ $item->resolved_cover }}" alt="{{ $book->BookName }}" class="h-36 w-28 rounded-xl border border-indigo-100 object-cover shadow-sm" loading="lazy">
+
+            <div class="space-y-2">
+              <h2 class="text-xl font-semibold uppercase text-indigo-900">{{ $book->BookName }}</h2>
+              <p class="text-sm font-medium uppercase tracking-wide text-gray-500">{{ $item->author_name }}</p>
+              <p class="text-2xl font-semibold text-indigo-900">฿ {{ number_format($book->Price, 2) }}</p>
+            </div>
+          </div>
+
+          <form action="{{ route('cart.add', $book->BookID) }}" method="POST" class="self-end sm:self-auto">
             @csrf
-            @method('DELETE')
-            <button type="submit" class="text-gray-600 hover:text-red-600">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-              </svg>
-            </button>
-          </form>
-          <form action="{{ route('cart.add', $productId) }}" method="POST">
-            @csrf
-            <button type="submit" class="flex items-center bg-indigo-600 text-white font-medium py-2 px-6 rounded hover:bg-indigo-700 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h18M3 3v18m0-18l18 18"/>
-              </svg>
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit" class="inline-flex items-center gap-3 rounded-md bg-indigo-800 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow transition hover:bg-indigo-900">
+              <i class="fa-solid fa-cart-shopping text-lg"></i>
               Add to Cart
             </button>
           </form>
         </div>
-      </div>
       @endforeach
     </div>
-  @else
-    <p class="mt-6 text-center text-lg text-gray-600">Your wishlist is empty.</p>
   @endif
 </div>
 @endsection
