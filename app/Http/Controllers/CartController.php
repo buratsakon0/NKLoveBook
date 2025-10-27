@@ -191,5 +191,4 @@ class CartController extends Controller
         // คืนค่าจำนวนสินค้าทั้งหมดใน Cart
         return response()->json(['cartCount' => count($cart)]);
     }
-
 }
