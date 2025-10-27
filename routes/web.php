@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\SearchController;
 
 
 // หน้าแรก
@@ -28,6 +29,9 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+
+// Search route
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
