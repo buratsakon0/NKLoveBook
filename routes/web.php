@@ -14,6 +14,7 @@ use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\PaymentController;
 
 
 // หน้าแรก
@@ -91,4 +92,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [ShippingController::class, 'showShippingForm'])->name('checkout');
     Route::get('/checkout/edit', [ShippingController::class, 'editShippingForm'])->name('checkout.edit');
     Route::post('/checkout/save', [ShippingController::class, 'saveShippingAddress'])->name('checkout.save');
+    Route::get('/checkout/payment', [PaymentController::class, 'show'])->name('checkout.payment');
+    Route::post('/checkout/payment', [PaymentController::class, 'process'])->name('checkout.payment.process');
 });

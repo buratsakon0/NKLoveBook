@@ -79,7 +79,7 @@
         </a>
 
         <!-- Next Button -->
-        <a href="#"
+        <a href="{{ route('checkout.payment') }}"
            class="flex items-center bg-orange-500 text-white font-semibold py-2 px-6 rounded-md hover:bg-orange-600 transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7l7 7-7 7" />
