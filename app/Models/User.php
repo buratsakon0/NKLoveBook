@@ -28,4 +28,9 @@ class User extends Authenticatable
     {
         return $this->Password;
     }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class, 'UserID');
+    }
 }

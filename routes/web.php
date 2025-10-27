@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WishlistController;
 
 
 // หน้าแรก
@@ -64,3 +65,9 @@ Route::delete('/cart/remove/{productId}', [CartController::class, 'remove'])->na
 // Review routes
 Route::post('/book/{bookId}/review', [ReviewController::class, 'store'])->name('review.store')->middleware('auth');
 Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->name('review.destroy')->middleware('auth');
+
+
+//Wishlist
+Route::post('/wishlist/{book}', [WishlistController::class, 'store'])->name('wishlist.store');
+Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+Route::delete('/wishlist/{book}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
