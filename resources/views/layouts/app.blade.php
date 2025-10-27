@@ -4,11 +4,10 @@
     <!-- Google Font: Itim -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Mitr:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
     body {
-        font-family: 'Itim', cursive;
+         font-family: "Mitr", sans-serif;
     }
     </style>
 
