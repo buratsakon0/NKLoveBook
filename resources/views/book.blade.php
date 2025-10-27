@@ -238,6 +238,163 @@
       })
       .catch(console.error); // แสดง error ในกรณีที่มีปัญหา
     }
+
+  function updateCart(quantity) {
+    fetch('/update-cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+      },
+      body: JSON.stringify({
+        book_id: {{ $book->BookID }},
+        quantity: quantity
+      })
+    })
+      .then(response => response.json())
+      .then(data => {
+        const cartCount = document.getElementById('cartCount');
+        if (cartCount && typeof data.cartCount !== 'undefined') {
+          cartCount.textContent = data.cartCount;
+        }
+      })
+      .catch(console.error);
+  }
+
+  function toggleWishlist(bookId) {
+    const heartIcon = document.getElementById(`heart-icon-${bookId}`);
+    const isInWishlist = heartIcon?.classList.contains('fa-solid');
+
+    if (!heartIcon) {
+      return;
+    }
+
+    const promise = isInWishlist ? removeFromWishlist(bookId) : addToWishlist(bookId);
+
+    promise.then((successful) => {
+      if (!successful) {
+        return;
+      }
+
+      heartIcon.classList.toggle('fa-solid');
+      heartIcon.classList.toggle('fa-regular');
+      heartIcon.classList.toggle('text-red-500');
+      heartIcon.classList.toggle('text-gray-300');
+    });
+  }
+
+  function addToWishlist(bookId) {
+    return wishlistRequest(`/wishlist/add/${bookId}`, 'POST', ['success', 'exists']);
+  }
+
+  function removeFromWishlist(bookId) {
+    return wishlistRequest(`/wishlist/remove/${bookId}`, 'DELETE', ['success', 'not_found']);
+  }
+
+  function wishlistRequest(url, method, successStatuses = ['success']) {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    if (!csrfToken) {
+      console.error('CSRF token not found in document meta.');
+      return Promise.resolve(false);
+    }
+
+    const hasBody = ['POST', 'PUT', 'PATCH'].includes(method.toUpperCase());
+
+    return fetch(url, {
+      method,
+      credentials: 'same-origin',
+      headers: {
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': csrfToken,
+        'X-Requested-With': 'XMLHttpRequest',
+        ...(hasBody ? { 'Content-Type': 'application/json' } : {})
+      },
+      ...(hasBody ? { body: JSON.stringify({}) } : {})
+    })
+      .then(response => {
+        if (response.redirected && response.url.includes('/login')) {
+          window.location.href = response.url;
+          return null;
+        }
+
+        if (response.status === 401) {
+          window.location.href = '/login';
+          return null;
+        }
+
+        const contentType = response.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          return response.json();
+        }
+
+        return response.text().then(text => {
+          console.warn('Unexpected wishlist response:', text);
+          return null;
+        });
+      })
+      .then(data => {
+        if (!data) {
+          return false;
+        }
+
+        if (successStatuses.includes(data.status)) {
+          if (data.message) {
+            showWishlistToast(data.message, 'success');
+          }
+          return true;
+        }
+
+        showWishlistToast(data.message ?? 'ไม่สามารถดำเนินการได้ กรุณาลองใหม่อีกครั้ง', 'error');
+        return false;
+      })
+      .catch(error => {
+        console.error('Wishlist request error:', error);
+        showWishlistToast('เกิดข้อผิดพลาด กรุณาลองใหม่', 'error');
+        return false;
+      });
+  }
+
+  function showWishlistToast(message, type = 'info') {
+    if (!message) {
+      return;
+    }
+
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.top = '1.5rem';
+    toast.style.right = '1.5rem';
+    toast.style.zIndex = '9999';
+    toast.style.padding = '0.75rem 1.25rem';
+    toast.style.borderRadius = '0.75rem';
+    toast.style.boxShadow = '0 10px 18px rgba(15, 23, 42, 0.15)';
+    toast.style.fontSize = '0.95rem';
+    toast.style.fontWeight = '600';
+    toast.style.color = '#ffffff';
+    toast.style.transition = 'opacity 0.5s ease';
+
+    if (type === 'success') {
+      toast.style.backgroundColor = '#22c55e';
+    } else if (type === 'error') {
+      toast.style.backgroundColor = '#ef4444';
+    } else {
+      toast.style.backgroundColor = '#4f46e5';
+    }
+
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+    }, 2200);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 2700);
+  }
+
+  window.toggleWishlist = toggleWishlist;
   </script>
+
 
 @endsection
