@@ -48,6 +48,27 @@ class PublisherSeeder extends Seeder
             ['PublisherName' => 'Dplus Guide'],
             ['PublisherName' => 'อมรินทร์ท่องโลก'],
             ['PublisherName' => 'ธิงค์ บียอนด์ บุ๊คส์, บจก.'],
+
+            // Fiction
+            ['PublisherName' => 'รัตนนาม'],
+            ['PublisherName' => 'เพชรไพลิน รัตนนาม'],
+            ['PublisherName' => 'เอเวอร์วาย'],
+
+            // Children’s book
+            ['PublisherName' => 'I.S.Practical'],
+            ['PublisherName' => 'YF CULTURE'],
+            ['PublisherName' => 'Little Heart'],
+
+            // Education & Learning
+            ['PublisherName' => 'ธิงค์บียอนด์/Think Beyond'],
+            ['PublisherName' => 'บิงโก/bingobook'],
+            ['PublisherName' => 'ดี.เค.บุ๊ค ดิสทริบิว'],
+
+            // Science & Technology
+            ['PublisherName' => 'กาลาปากอส'],
+            ['PublisherName' => 'Bounce'],
+            ['PublisherName' => 'ยิปซี/Gypzy'],
+            ['PublisherName' => 'ซีเอ็ดยูเคชั่น/se-ed'],
         ];
 
         foreach ($publishers as $publisher) {

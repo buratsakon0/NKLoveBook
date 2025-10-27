@@ -58,6 +58,27 @@ class AuthorSeeder extends Seeder
             ['AuthorName' => 'Travelkanuman'],
             ['AuthorName' => 'TWIN x TRAVEL'],
             ['AuthorName' => 'นัฏนนเสนาแสง'],
+
+            // Fiction
+            ['AuthorName' => 'เจ้าปลาน้อย'],
+            ['AuthorName' => 'Bikabi (ปี่ข่าปี่)'],
+
+            // Children’s book
+            ['AuthorName' => 'กองบรรณาธิการ'],
+            ['AuthorName' => 'ชิวเจียฮุ่ย'],
+            ['AuthorName' => 'Devin Elle Kurtz'],
+
+            // Education & Learning
+            ['AuthorName' => 'นามิ โนจิมะ'],
+            ['AuthorName' => 'กองบรรณาธิการ Think Beyond Education'],
+            ['AuthorName' => 'Dr.Barbara Oakley'],
+            ['AuthorName' => 'Melissa S.'],
+
+            // Science & Technology
+            ['AuthorName' => 'Jack Lewis'],
+            ['AuthorName' => 'What on Earth'],
+            ['AuthorName' => 'ศุภวิทย์ ถาวรบุตร'],
+            ['AuthorName' => 'บัญชา ปะสีละเตสัง'],
         ];
 
         foreach ($authors as $author) {
