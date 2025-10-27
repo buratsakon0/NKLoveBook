@@ -394,6 +394,36 @@
   }
 
   window.toggleWishlist = toggleWishlist;
+
+    // Star rating functionality
+    function submitRating(rating) {
+      document.getElementById('rating-score').value = rating;
+      document.getElementById('rating-form').submit();
+    }
+
+    // Add hover effects for clickable stars
+    document.addEventListener('DOMContentLoaded', function() {
+      const stars = document.querySelectorAll('#rating-stars i');
+      
+      stars.forEach((star, index) => {
+        star.addEventListener('mouseenter', function() {
+          // Highlight stars up to hovered star
+          for (let i = 0; i <= index; i++) {
+            stars[i].classList.remove('fa-regular');
+            stars[i].classList.add('fa-solid');
+            stars[i].classList.add('text-orange-500');
+          }
+        });
+        
+        star.addEventListener('mouseleave', function() {
+          // Reset all stars
+          stars.forEach(s => {
+            s.classList.remove('fa-solid', 'text-orange-500');
+            s.classList.add('fa-regular');
+          });
+        });
+      });
+    });
   </script>
 
 
