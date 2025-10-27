@@ -107,7 +107,9 @@
     <!-- Left: Logo -->
     <div class="flex items-center gap-3">
       <img src="{{ asset('images/newlogo.png') }}" class="w-12 h-12" alt="logo">
-      <span class="text-lg font-bold">น้ำข้าวรักหนังสือ</span>
+      <span class="text-lg font-bold">
+        น้ำข้าว<span class="text-pink-500">รัก</span>หนังสือ
+      </span>
     </div>
 
     <!-- Center: Search -->

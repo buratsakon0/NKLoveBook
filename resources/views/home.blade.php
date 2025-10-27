@@ -3,10 +3,12 @@
 @section('content')
 
   <!-- 🟣 Banner Section -->
-  <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:6.8rem; padding-bottom:6.8rem;">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 px-20">
+  <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:0rem; padding-bottom:0rem;">
+    <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center ">
       <div class="md:w-1/2">
-        <h2 class="font-bold text-indigo-900 mb-6" style="font-size:3rem;">น้ำข้าวรักหนังสือ</h2>
+        <h2 class="font-bold text-indigo-900 mb-6" style="font-size:4rem;">
+          น้ำข้าว<span style="color:#ec4899;">รัก</span>หนังสือ
+        </h2>
         <p class="text-gray-700 mb-8" style="font-size:1.1rem; line-height:1.8;">
           “ที่นี่...เราคัดสรรหนังสือดี ๆ เพื่อให้ทุกคนได้เจอเรื่องราวที่ใช่<br>
           ในวันที่ต้องการแรงบันดาลใจ”
@@ -17,7 +19,7 @@
         </a>
       </div>
       <div>
-        <img src="{{ asset('images/homePicture.png') }}" style="width:630px; height:360px; object-fit:cover;">
+        <img src="{{ asset('images/homePicture.png') }}" style="width:750px; height:500px; object-fit:cover;">
       </div>
     </div>
   </section>
