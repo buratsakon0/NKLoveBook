@@ -32,6 +32,12 @@ class PublisherSeeder extends Seeder
 
             // Health & Lifestyle
             ['PublisherName' => 'สวนเงินมีมา/Suan Ngoen Mi Ma'],
+            ['PublisherName' => 'แสงแดด/sangdad'],
+            ['PublisherName' => 'อมรินทร์สุขภาพ'],
+            ['PublisherName' => 'STEPS'],
+            ['PublisherName' => 'openbooks, สนพ.'],
+            ['PublisherName' => 'อมรินทร์ How to'],
+            ['PublisherName' => 'ไลฟ์พลัส Life+'],
         ];
 
         foreach ($publishers as $publisher) {

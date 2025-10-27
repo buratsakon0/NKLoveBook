@@ -41,6 +41,13 @@ class AuthorSeeder extends Seeder
             ['AuthorName' => 'มือเขียน'],
             ['AuthorName' => 'กองบก.นิตยสารบ้านและสวน'],
             ['AuthorName' => 'วิรัชญา จารุจารีต'],
+            ['AuthorName' => 'กองบรรณาธิการแสงแดด'],
+            ['AuthorName' => 'นิตยสาร Health Cuisine กอง บก.'],
+            ['AuthorName' => 'poiluang_healthy'],
+            ['AuthorName' => 'ศุภวุฒิ สายเชื้อ ดร.'],
+            ['AuthorName' => 'ชิดชนก ทองใหญ่ ณ อยุธยา'],
+            ['AuthorName' => 'นายแพทย์ธนีย์ ธนียวัน'],
+            ['AuthorName' => 'ทิพาพรรณ ศิริเวชฎารักษ์,ปัญชัช ชั่งจันทร'],
         ];
 
         foreach ($authors as $author) {
