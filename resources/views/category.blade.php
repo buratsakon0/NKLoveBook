@@ -163,5 +163,47 @@
   }
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  // ฟังก์ชันเมื่อคลิก "Add to Cart"
+  function addToCart(bookId) {
+    let quantity = 1; // ค่า default
+    // เรียกใช้งานฟังก์ชันอัปเดตจำนวนสินค้าในตะกร้า
+    updateCartQuantity(bookId, quantity);
+
+    // แสดง SweetAlert2 แจ้งเตือนเมื่อเพิ่มหนังสือลงในตะกร้า
+    Swal.fire({
+      icon: 'success',
+      title: 'เพิ่มหนังสือใน Cart แล้ว',
+      text: 'สินค้าถูกเพิ่มลงใน Cart ของคุณเรียบร้อย',
+      showConfirmButton: false,
+      timer: 1500, // จะแสดง 1.5 วินาทีแล้วหายไป
+      customClass: {
+        popup: 'bg-green-500 text-white font-semibold p-4 rounded-lg', // ปรับสไตล์ป๊อปอัพ
+      }
+    });
+  }
+
+  // ฟังก์ชันเพิ่มจำนวนสินค้า
+  function updateCartQuantity(bookId, quantity) {
+    fetch('/update-cart', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+      },
+      body: JSON.stringify({
+        book_id: bookId,
+        quantity: quantity
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // อัปเดตจำนวนในไอคอน Cart
+      document.getElementById('cartCount').textContent = data.cartCount;
+    });
+  }
+</script>
 
 @endsection
