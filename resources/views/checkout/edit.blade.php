@@ -79,20 +79,19 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3e38c1',
-            cancelButtonColor: 'rgba(255, 87, 4, 1)',
+            cancelButtonColor: 'rgba(255, 114, 37, 1)',
             confirmButtonText: 'Yes, go back!',
-            cancelButtonText: 'Cancel'
+            cancelButtonText: 'Cancel',
+            reverseButtons: true // ✅ สลับตำแหน่งปุ่ม
         }).then((result) => {
             if (result.isConfirmed) {
-                // ถ้าผู้ใช้กด "Yes", ไปยังหน้าต่างก่อนหน้า
                 window.location.href = '{{ route('checkout') }}';
             }
         });
     }
 
     // เมื่อกดปุ่ม Save
-    const shippingForm = document.getElementById("shippingForm");
-    shippingForm.addEventListener("submit", function(event) {
+    document.getElementById("shippingForm").addEventListener("submit", function(event) {
         event.preventDefault();
         Swal.fire({
             title: 'Are you sure?',
@@ -100,14 +99,16 @@
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#3e38c1',
-            cancelButtonColor: 'rgba(255, 87, 4, 1)',
+            cancelButtonColor: 'rgba(255, 114, 37, 1)',
             confirmButtonText: 'Yes, save it!',
-            cancelButtonText: 'No, cancel'
+            cancelButtonText: 'No, cancel',
+            reverseButtons: true // ✅ ให้ปุ่ม Cancel อยู่ซ้าย Confirm อยู่ขวา
         }).then((result) => {
             if (result.isConfirmed) {
-                shippingForm.submit();
+                event.target.submit();
             }
         });
     });
 </script>
+
 @endsection
