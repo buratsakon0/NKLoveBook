@@ -12,6 +12,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ShippingController;
 
 
 // หน้าแรก
@@ -77,3 +79,14 @@ Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->na
 Route::post('/wishlist/{book}', [WishlistController::class, 'store'])->name('wishlist.store');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::delete('/wishlist/{book}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+// เส้นทางสำหรับหน้า Checkout
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+
+// เส้นทางสำหรับการ submit ข้อมูลใน Checkout
+Route::post('/checkout/submit', [CheckoutController::class, 'submit'])->name('checkout.submit');
+
+// shipping
+Route::get('/checkout', [ShippingController::class, 'showShippingForm'])->name('checkout');
+Route::get('/checkout/edit', [ShippingController::class, 'editShippingForm'])->name('checkout.edit');
+Route::post('/checkout/save', [ShippingController::class, 'saveShippingAddress'])->name('checkout.save');

@@ -3,20 +3,31 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
+    // ฟังก์ชันสำหรับแสดงหน้า Checkout
     public function index()
     {
-        //  ตรวจสอบว่าผู้ใช้ล็อกอินหรือยัง
-        if (!Auth::check()) {
-            // ถ้ายังไม่ login → ส่งกลับไปหน้า login
-            return redirect()->route('login')
-                ->with('error', 'กรุณาเข้าสู่ระบบก่อนทำการชำระเงิน');
-        }
+        return view('checkout.index');
+    }
 
-        //  ถ้า login แล้ว → แสดงหน้า checkout (shipping)
-        return view('checkout');
+    // ฟังก์ชันสำหรับการ submit ข้อมูลใน Checkout
+    public function submit(Request $request)
+    {
+        // ตรวจสอบข้อมูลที่กรอก
+        $validatedData = $request->validate([
+            'address' => 'required|string|max:255',
+            // เพิ่มเงื่อนไขการตรวจสอบข้อมูลที่คุณต้องการ
+        ]);
+
+        // เก็บข้อมูลการชำระเงินและที่อยู่การจัดส่ง
+
+        // ตัวอย่างการเก็บข้อมูลใน session
+        session()->put('shipping_address', $validatedData['address']);
+
+        // หากต้องการเปลี่ยนเส้นทางไปยังหน้าอื่น (เช่น หน้า Confirmation)
+        return redirect()->route('confirmation'); // หรือหน้าอื่นที่คุณต้องการ
     }
 }
+
