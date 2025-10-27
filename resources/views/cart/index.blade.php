@@ -9,7 +9,7 @@
     Cart
   </h1>
 
-  @if(session('cart') && count(session('cart')) > 0)
+  @if(!empty($cart))
     <div class="bg-white shadow-md rounded-lg border border-gray-200">
       <div class="p-4 bg-gray-100 flex items-center font-semibold text-lg border-b border-gray-200">
         <input type="checkbox" checked class="accent-orange-500 mr-2">
@@ -27,10 +27,10 @@
           </tr>
         </thead>
         <tbody>
-          @foreach(session('cart') as $productId => $product)
+          @foreach($cart as $productId => $product)
             <tr class="border-b border-gray-200 hover:bg-gray-50">
               <td class="py-4 px-6 flex items-center space-x-4">
-                <img src="{{ asset('storage/' . $product['image']) }}" alt="{{ $product['name'] }}" class="w-24 h-auto rounded shadow-sm">
+                <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="w-24 h-auto rounded shadow-sm">
                 <div>
                   <p class="font-semibold text-indigo-900">{{ $product['name'] }}</p>
                   <p class="text-sm text-gray-500 mt-1 uppercase tracking-wide">
@@ -65,7 +65,7 @@
       </table>
 
       <div class="flex justify-between items-center px-6 py-4 border-t border-gray-200">
-        <p class="text-gray-600">{{ count(session('cart')) }} Items</p>
+        <p class="text-gray-600">{{ count($cart) }} Items</p>
         <div class="text-right">
           <span class="text-xl font-semibold text-gray-900">฿{{ number_format($totalPrice, 2) }}</span>
         </div>

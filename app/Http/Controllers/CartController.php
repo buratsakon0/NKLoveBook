@@ -2,11 +2,10 @@
 
 // app/Http/Controllers/CartController.php
 
-// app/Http/Controllers/CartController.php
-
 namespace App\Http\Controllers;
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CartController extends Controller
 {
@@ -14,11 +13,43 @@ class CartController extends Controller
     public function showCart()
     {
         $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return view('cart.index', [
+                'cart' => [],
+                'totalPrice' => 0,
+            ]);
+        }
+
+        $bookIds = array_keys($cart);
+        $books = Book::whereIn('BookID', $bookIds)->get()->keyBy('BookID');
+
+        foreach ($cart as $productId => &$product) {
+            $book = $books->get($productId);
+            if ($book) {
+                $product['image'] = $this->resolveImagePath($book->cover_image);
+                $product['author'] = $book->author?->AuthorName ?? $product['author'] ?? 'UNKNOWN AUTHOR';
+                $product['name'] = $book->BookName;
+                $product['price'] = $book->Price;
+            } 
+            elseif (!isset($product['image']) || empty($product['image'])) {
+                $product['image'] = asset('images/default-book.jpg');
+            } else {
+                $product['image'] = $this->normalizeStoredImagePath($product['image']);
+            }
+        }
+        unset($product); // ป้องกัน reference ค้าง
+
+        session()->put('cart', $cart);
+
         $totalPrice = array_sum(array_map(function($product) {
             return $product['price'] * $product['quantity'];
         }, $cart));
 
-        return view('cart.index', compact('cart', 'totalPrice'));
+        return view('cart.index', [
+            'cart' => $cart,
+            'totalPrice' => $totalPrice,
+        ]);
     }
 
     // ฟังก์ชันอัปเดตจำนวนสินค้า
@@ -52,7 +83,7 @@ class CartController extends Controller
         return redirect()->route('cart.index');
     }
 
-    public function addToCart($bookId)
+    public function addToCart(Request $request, $bookId)
     {
         // ดึงข้อมูลหนังสือพร้อมผู้เขียน
         $book = \App\Models\Book::with('author')->find($bookId);
@@ -64,15 +95,21 @@ class CartController extends Controller
         // ดึงข้อมูลตะกร้า
         $cart = session()->get('cart', []);
 
+        // อ่านจำนวนจากฟอร์มและป้องกันค่าจำนวนที่ไม่ถูกต้อง
+        $requestedQuantity = (int) $request->input('quantity', 1);
+        $requestedQuantity = $requestedQuantity > 0 ? $requestedQuantity : 1;
+
+        $imageUrl = $this->resolveImagePath($book->cover_image);
+
         // ถ้ามีหนังสือเล่มนี้อยู่แล้วในตะกร้า
         if (isset($cart[$bookId])) {
-            $cart[$bookId]['quantity']++;
+            $cart[$bookId]['quantity'] += $requestedQuantity;
         } else {
             $cart[$bookId] = [
                 'name' => $book->BookName,
                 'price' => $book->Price,
-                'quantity' => 1,
-                'image' => $book->cover_image ? 'storage/' . $book->cover_image : 'images/default-book.jpg',
+                'quantity' => $requestedQuantity,
+                'image' => $imageUrl,
                 'author' => $book->author?->AuthorName ?? 'UNKNOWN AUTHOR',
             ];
         }
@@ -99,6 +136,36 @@ class CartController extends Controller
 
         // เปลี่ยนเส้นทางไปยังหน้าตะกร้า
         return redirect()->route('cart.index');
+    }
+
+    /**
+     * แปลง path รูปภาพของหนังสือในฐานข้อมูลให้พร้อมใช้งานบนหน้าเว็บ
+     */
+    protected function resolveImagePath(?string $coverImage): string
+    {
+        // return $coverImage;
+        if (!$coverImage) {
+            return asset('images/default-book.jpg');
+        }
+
+        if (filter_var($coverImage, FILTER_VALIDATE_URL)) {
+            return $coverImage;
+        }
+
+        return asset('images/' . ltrim($coverImage, '/'));
+    }
+
+    /**
+     * แปลง path รูปภาพที่เก็บไว้ใน session ให้กลับมาเป็น URL ที่ใช้งานได้
+     */
+    protected function normalizeStoredImagePath(string $storedPath): string
+    {
+        if (filter_var($storedPath, FILTER_VALIDATE_URL)) {
+            return $storedPath;
+        }
+
+        $cleanPath = ltrim($storedPath, '/');
+        return asset($cleanPath);
     }
 
 }
