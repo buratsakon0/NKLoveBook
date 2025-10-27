@@ -29,7 +29,7 @@
             <div class="mt-4 text-sm text-gray-600 space-y-1">
               <p><span class="font-semibold text-gray-900">ผู้เขียน:</span> {{ $authorName }}</p>
               <p><span class="font-semibold text-gray-900">สำนักพิมพ์:</span> {{ $publisherName }}</p>
-              <p><span class="font-semibold text-gray-900">หมวดหมู่:</span> {{ $categoryName }}</p>
+              <p><span class="font-semibold text-gray-900">หมวดหมู่:</span> <a href="/category/{{$book->CategoryID}}">{{ $categoryName }}<a></p>
               <p><span class="font-semibold text-gray-900">ISBN:</span> {{ $book->ISBN }}</p>
               <p><span class="font-semibold text-gray-900">จำนวนหน้า:</span> {{ $book->Pages }}</p>
             </div>
