@@ -3,7 +3,7 @@
 @section('content')
 
 <!-- 🟣 Banner Section -->
-  <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:2rem; padding-bottom:2rem;">
+  <section style="background: linear-gradient(to right, #ffe6f0 0%, #ffffff 100%); padding-top:2rem; padding-bottom:2rem;">
     <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 px-20">
       <div class="md:w-1/2">
         <h2 class="font-bold text-indigo-900 mb-6" style="font-size:3rem;">{{ $category->CategoryName }}</h2>
@@ -54,17 +54,8 @@
       </div>
     </div>
   </section>
-  
-<section class="py-16 bg-gradient-to-r from-pink-20 to-white">
-  <div class="text-center mb-10">
-    <h2 class="text-3xl font-bold text-indigo-900">
-      {{ $category->CategoryName }}
-    </h2>
-    <p class="text-gray-500 mt-2">
-      สำรวจหนังสือในหมวด "{{ $category->CategoryName }}"
-    </p>
-  </div>
 
+<section class="py-16 bg-gradient-to-r from-pink-20 to-white">
  <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-items-start">
     @foreach ($books as $book)
       <div class="bg-white shadow-lg rounded-xl overflow-hidden w-72 h-[480px] flex flex-col justify-between hover:shadow-2xl transition duration-200">
