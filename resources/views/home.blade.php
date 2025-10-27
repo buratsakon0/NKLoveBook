@@ -196,7 +196,7 @@
   <section style="background: linear-gradient(to right, #ffe6f0 0%, #e8f3ff 50%, #ffffff 100%); padding-top:8rem; padding-bottom:8rem;">
     <div class="text-center mb-10">
       <p class="text-gray-400 uppercase text-sm tracking-widest">Some Quality Items</p>
-      <h2 class="text-3xl font-bold text-indigo-900">Best Seller</h2>
+      <h2 class="font-bold text-indigo-900 mb-6" style="font-size:2.5rem;">Best Seller</h2>
     </div>
 
     <div class="flex flex-wrap justify-center gap-10 px-4 md:px-10">
