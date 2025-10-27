@@ -3,8 +3,8 @@
 @section('content')
 <div class="max-w-5xl mx-auto px-6 py-12">
   <div class="flex items-center justify-center gap-4 text-indigo-900 mb-10">
-    <svg class="w-10 h-10" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z" />
+    <svg fill="#393280"  class="sw-10 h-10" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path  d="M25 39.7l-.6-.5C11.5 28.7 8 25 8 19c0-5 4-9 9-9 4.1 0 6.4 2.3 8 4.1 1.6-1.8 3.9-4.1 8-4.1 5 0 9 4 9 9 0 6-3.5 9.7-16.4 20.2l-.6.5zM17 12c-3.9 0-7 3.1-7 7 0 5.1 3.2 8.5 15 18.1 11.8-9.6 15-13 15-18.1 0-3.9-3.1-7-7-7-3.5 0-5.4 2.1-6.9 3.8L25 17.1l-1.1-1.3C22.4 14.1 20.5 12 17 12z" />
     </svg>
     <h1 class="text-3xl font-bold uppercase tracking-wide">My Wishlist</h1>
   </div>
@@ -29,7 +29,7 @@
     <div class="flex flex-col gap-6">
       @foreach ($wishlistItems as $item)
         @php($book = $item->book)
-        <div class="flex flex-col gap-6 rounded-[28px] border-2 border-indigo-800 bg-white px-6 py-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex flex-col  gap-6 rounded-[16px] border-2 border-[#393280] bg-white px-6 py-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md sm:flex-row sm:items-center sm:justify-between">
           <div class="flex w-full flex-1 items-center gap-6">
             <form action="{{ route('wishlist.remove', $book->BookID) }}" method="POST" class="flex-shrink-0">
               @csrf
@@ -44,14 +44,14 @@
             <div class="space-y-2">
               <h2 class="text-xl font-semibold uppercase text-indigo-900">{{ $book->BookName }}</h2>
               <p class="text-sm font-medium uppercase tracking-wide text-gray-500">{{ $item->author_name }}</p>
-              <p class="text-2xl font-semibold text-indigo-900">฿ {{ number_format($book->Price, 2) }}</p>
+              <p class="text-2xl font-semibold text-black">฿ {{ number_format($book->Price, 2) }}</p>
             </div>
           </div>
 
           <form action="{{ route('cart.add', $book->BookID) }}" method="POST" class="self-end sm:self-auto">
             @csrf
             <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="inline-flex items-center gap-3 rounded-md bg-indigo-800 px-6 py-3 font-semibold uppercase tracking-wide text-white shadow transition hover:bg-indigo-900">
+            <button type="submit" class="inline-flex items-center gap-3 bg-[#393280] px-6 py-3 font-semibold uppercase tracking-wide text-white shadow transition hover:bg-indigo-900">
               <i class="fa-solid fa-cart-shopping text-lg"></i>
               Add to Cart
             </button>

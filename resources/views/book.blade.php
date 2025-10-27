@@ -19,12 +19,12 @@
 
   <section class="bg-gray-50 py-12">
     <div class="max-w-6xl mx-auto bg-white shadow-md rounded-3xl p-10">
-      <div class="grid lg:grid-cols-[340px,1fr] gap-12">
+      <div class="grid lg:grid-cols-[340px,1fr] gap-6">
         <div class="bg-gray-100 rounded-2xl p-6 flex items-center justify-center shadow-inner">
           <img src="{{ $coverImage }}" alt="{{ $book->BookName }} cover"
             class="w-full max-w-xs rounded-lg shadow-lg">
         </div>
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex justify-between items-center">
           <h1 class="text-3xl font-bold text-indigo-900 leading-tight">{{ $book->BookName }}</h1>
           <button
             type="button"
@@ -38,8 +38,7 @@
         </div>
         <div class="flex flex-col gap-6">
           <div>
-           
-            <div class="mt-4 text-sm text-gray-600 space-y-1">
+            <div class="text-sm text-gray-600 space-y-1">
               <p><span class="font-semibold text-gray-900">ผู้เขียน:</span> {{ $authorName }}</p>
               <p><span class="font-semibold text-gray-900">สำนักพิมพ์:</span> {{ $publisherName }}</p>
               <p><span class="font-semibold text-gray-900">หมวดหมู่:</span> <a href="/category/{{$book->CategoryID}}">{{ $categoryName }}<a></p>
@@ -50,7 +49,7 @@
 
           <p class="text-4xl font-bold text-orange-500">฿ {{ number_format($book->Price, 2) }}</p>
 
-          <div class="flex flex-wrap items-center gap-5">
+          <div class="flex flex-wrap items-center mt-4 gap-5">
             @auth
               <!-- ✅ ผู้ใช้ล็อกอินแล้ว -->
               <form action="{{ route('cart.add', $book->BookID) }}" method="POST">
@@ -89,16 +88,16 @@
         </div>
       </div>
 
-      <div class="mt-12 grid lg:grid-cols-3 gap-10">
+      <div class="mt-6 grid lg:grid-cols-3 gap-8">
         <div class="lg:col-span-2 space-y-5">
           <h2 class="text-lg font-bold text-gray-900 uppercase tracking-wide">Details:</h2>
-          <p class="text-sm leading-7 text-gray-600 whitespace-pre-line">
+          <p class="text-sm leading-7 text-gray-600 ">
             {{ $book->Description ?? 'รายละเอียดของหนังสือเล่มนี้ยังไม่พร้อมให้แสดงในขณะนี้' }}
           </p>
         </div>
       </div>
 
-      <div class="mt-12">
+      <div class="mt-6">
         <h2 class="text-lg font-bold text-gray-900 uppercase tracking-wide">Reviews:</h2>
         <div class="mt-6 grid md:grid-cols-2 gap-6">
           <div class="bg-white border border-gray-200 rounded-3xl p-6 shadow-sm">
