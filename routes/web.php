@@ -94,4 +94,5 @@ Route::middleware('auth')->group(function () {
     Route::post('/checkout/save', [ShippingController::class, 'saveShippingAddress'])->name('checkout.save');
     Route::get('/checkout/payment', [PaymentController::class, 'show'])->name('checkout.payment');
     Route::post('/checkout/payment', [PaymentController::class, 'process'])->name('checkout.payment.process');
+    Route::get('/checkout/complete', [PaymentController::class, 'complete'])->name('checkout.complete');
 });

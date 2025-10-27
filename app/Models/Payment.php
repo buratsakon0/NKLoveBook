@@ -11,18 +11,7 @@ class Payment extends Model
 
     protected $table = 'payments';
     protected $primaryKey = 'PaymentID';
-    protected $fillable = [
-        'Status',
-        'PayDate',
-        'Method',
-        'TransactionID',
-        'Amount',
-        'UserID',
-        'CardType',
-        'CardLastFour',
-        'CardExpMonth',
-        'CardExpYear',
-    ];
+    protected $fillable = ['Status', 'PayDate', 'Method', 'TransactionID'];
     public $timestamps = true;
 
     public function order() {

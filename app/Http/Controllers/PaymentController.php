@@ -95,25 +95,32 @@ class PaymentController extends Controller
                 ->withInput();
         }
 
-        DB::transaction(function () use ($user, $validated, $total, $normalizedCardNumber, $expMonth, $expYear) {
-            Payment::create([
+        $payment = DB::transaction(function () use ($user, $validated, $total, $normalizedCardNumber, $expMonth, $expYear, $cart) {
+            $payment = Payment::create([
                 'Status' => 'pending',
                 'PayDate' => null,
-                'Method' => 'credit_card',
-                'TransactionID' => null,
-                'Amount' => $total,
-                'UserID' => $user->getKey(),
-                'CardType' => strtoupper($validated['card_type']),
-                'CardLastFour' => substr($normalizedCardNumber, -4),
-                'CardExpMonth' => $expMonth,
-                'CardExpYear' => $expYear,
+                'Method' => strtoupper($validated['card_type']),
+                'TransactionID' => sprintf('%.2f|%s|%02d/%d', $total, substr($normalizedCardNumber, -4), $expMonth, $expYear),
             ]);
 
-            // Leave cart items intact for now; fulfillment logic can clear them later
+            // clear cart items from database and session to prevent duplicate checkout
+            $cart->items()->delete();
+            session()->forget('cart');
+
+            return $payment;
         });
 
         return redirect()
-            ->route('checkout.payment')
-            ->with('success', 'บันทึกรายการชำระเงินเรียบร้อยแล้ว');
+            ->route('checkout.complete')
+            ->with('payment_id', $payment->getKey());
+    }
+
+    public function complete()
+    {
+        $user = Auth::user();
+
+        return view('checkout.complete', [
+            'user' => $user,
+        ]);
     }
 }
