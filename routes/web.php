@@ -83,6 +83,7 @@ Route::delete('/wishlist/{book}', [WishlistController::class, 'destroy'])->name(
 // เส้นทางสำหรับหน้า Checkout
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
 
+
 // เส้นทางสำหรับการ submit ข้อมูลใน Checkout
 Route::post('/checkout/submit', [CheckoutController::class, 'submit'])->name('checkout.submit');
 
