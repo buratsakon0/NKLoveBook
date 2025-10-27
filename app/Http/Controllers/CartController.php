@@ -4,15 +4,65 @@
 
 namespace App\Http\Controllers;
 use App\Models\Book;
+use App\Models\Cart;
+use App\Models\CartItem;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
     // ฟังก์ชันสำหรับแสดงตะกร้า
     public function showCart()
     {
-        $cart = session()->get('cart', []);
+        $user = Auth::user();
+        $cart = [];
+
+        if ($user) {
+            $cartModel = Cart::firstOrCreate(['UserID' => $user->getKey()]);
+
+            $sessionCart = session()->get('cart', []);
+            if (!empty($sessionCart)) {
+                foreach ($sessionCart as $bookId => $product) {
+                    $this->persistCartItem($cartModel, (int) $bookId, (int) ($product['quantity'] ?? 1));
+                }
+            }
+
+            $cartItems = $cartModel->items()->with('book.author')->get();
+            foreach ($cartItems as $item) {
+                if (!$item->book) {
+                    continue;
+                }
+
+                $cart[$item->book->BookID] = $this->formatProductArray($item->book, $item->Quantity);
+            }
+
+            session()->put('cart', $cart);
+        } else {
+            $cart = session()->get('cart', []);
+
+            if (!empty($cart)) {
+                $bookIds = array_keys($cart);
+                $books = Book::whereIn('BookID', $bookIds)->with('author')->get()->keyBy('BookID');
+
+                foreach ($cart as $productId => &$product) {
+                    $book = $books->get($productId);
+                    if ($book) {
+                        $product = $this->formatProductArray(
+                            $book,
+                            $product['quantity'] ?? 1,
+                            $product
+                        );
+                    } elseif (!isset($product['image']) || empty($product['image'])) {
+                        $product['image'] = asset('images/default-book.jpg');
+                    } else {
+                        $product['image'] = $this->normalizeStoredImagePath($product['image']);
+                    }
+                }
+                unset($product);
+
+                session()->put('cart', $cart);
+            }
+        }
 
         if (empty($cart)) {
             return view('cart.index', [
@@ -20,27 +70,6 @@ class CartController extends Controller
                 'totalPrice' => 0,
             ]);
         }
-
-        $bookIds = array_keys($cart);
-        $books = Book::whereIn('BookID', $bookIds)->get()->keyBy('BookID');
-
-        foreach ($cart as $productId => &$product) {
-            $book = $books->get($productId);
-            if ($book) {
-                $product['image'] = $this->resolveImagePath($book->cover_image);
-                $product['author'] = $book->author?->AuthorName ?? $product['author'] ?? 'UNKNOWN AUTHOR';
-                $product['name'] = $book->BookName;
-                $product['price'] = $book->Price;
-            } 
-            elseif (!isset($product['image']) || empty($product['image'])) {
-                $product['image'] = asset('images/default-book.jpg');
-            } else {
-                $product['image'] = $this->normalizeStoredImagePath($product['image']);
-            }
-        }
-        unset($product); // ป้องกัน reference ค้าง
-
-        session()->put('cart', $cart);
 
         $totalPrice = array_sum(array_map(function($product) {
             return $product['price'] * $product['quantity'];
@@ -65,6 +94,7 @@ class CartController extends Controller
             } elseif ($action == 'decrease' && $cart[$productId]['quantity'] > 1) {
                 $cart[$productId]['quantity']--;
             }
+            $this->syncQuantityToDatabase((int) $productId, $cart[$productId]['quantity']);
 
             session()->put('cart', $cart);
             return response()->json(['success' => true, 'cart' => $cart]);
@@ -78,6 +108,7 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         unset($cart[$productId]);
+        $this->removeFromDatabase((int) $productId);
 
         session()->put('cart', $cart);
         return redirect()->route('cart.index');
@@ -116,6 +147,7 @@ class CartController extends Controller
 
         // เก็บตะกร้าใน session
         session()->put('cart', $cart);
+        $this->syncQuantityToDatabase($bookId, $cart[$bookId]['quantity']);
 
         return redirect()->route('cart.index');
     }
@@ -131,6 +163,7 @@ class CartController extends Controller
             unset($cart[$productId]);
 
             // บันทึกข้อมูลตะกร้าหลังลบสินค้า
+            $this->removeFromDatabase((int) $productId);
             session()->put('cart', $cart);
         }
 
@@ -187,8 +220,83 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
+        $this->syncQuantityToDatabase((int) $bookId, (int) $cart[$bookId]['quantity']);
 
         // คืนค่าจำนวนสินค้าทั้งหมดใน Cart
         return response()->json(['cartCount' => count($cart)]);
+    }
+
+    protected function formatProductArray(Book $book, int $quantity, array $existing = []): array
+    {
+        return [
+            'name' => $book->BookName,
+            'price' => $book->Price,
+            'quantity' => $quantity,
+            'image' => $this->resolveImagePath($book->cover_image),
+            'author' => $book->author?->AuthorName ?? ($existing['author'] ?? 'UNKNOWN AUTHOR'),
+        ];
+    }
+
+    protected function getUserCart(): ?Cart
+    {
+        $user = Auth::user();
+        return $user ? Cart::firstOrCreate(['UserID' => $user->getKey()]) : null;
+    }
+
+    protected function syncQuantityToDatabase(int $bookId, int $quantity): void
+    {
+        $cart = $this->getUserCart();
+        if (!$cart) {
+            return;
+        }
+
+        if ($quantity <= 0) {
+            $this->removeFromDatabase($bookId);
+            return;
+        }
+
+        CartItem::updateOrCreate(
+            [
+                'CartID' => $cart->getKey(),
+                'BookID' => $bookId,
+            ],
+            [
+                'Quantity' => $quantity,
+            ]
+        );
+    }
+
+    protected function persistCartItem(Cart $cart, int $bookId, int $quantity): void
+    {
+        $quantity = max($quantity, 1);
+
+        $existing = CartItem::where('CartID', $cart->getKey())
+            ->where('BookID', $bookId)
+            ->first();
+
+        if ($existing) {
+            if ($existing->Quantity !== $quantity) {
+                $existing->Quantity = $quantity;
+                $existing->save();
+            }
+        } else {
+            CartItem::create([
+                'CartID' => $cart->getKey(),
+                'BookID' => $bookId,
+                'Quantity' => $quantity,
+            ]);
+        }
+    }
+
+    protected function removeFromDatabase(int $bookId): void
+    {
+        $cart = $this->getUserCart();
+        if (!$cart) {
+            return;
+        }
+
+        CartItem::where('CartID', $cart->getKey())
+            ->where('BookID', $bookId)
+            ->delete();
     }
 }
