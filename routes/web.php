@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\WishlistController;
-use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SearchController;
 
 
 // หน้าแรก
@@ -29,6 +29,9 @@ Route::get('/contact', function () {
 })->name('contact');
 
 Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+
+// Search route
+Route::get('/search', [SearchController::class, 'search'])->name('search');
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
@@ -74,8 +77,3 @@ Route::delete('/book/{bookId}/review', [ReviewController::class, 'destroy'])->na
 Route::post('/wishlist/{book}', [WishlistController::class, 'store'])->name('wishlist.store');
 Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
 Route::delete('/wishlist/{book}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
-
-// Route สำหรับ Checkout (ต้องล็อกอินก่อนถึงเข้าได้)
-Route::get('/checkout', [CheckoutController::class, 'index'])
-    ->name('checkout')
-    ->middleware('auth');

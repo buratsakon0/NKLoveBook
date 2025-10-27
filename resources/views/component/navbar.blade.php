@@ -112,12 +112,36 @@
 
     <!-- Center: Search -->
     <div class="flex-1 mx-8">
-      <input
-        type="text"
-        placeholder="Search Books"
-        style="background-color: #f6f6f6;"
-        class="w-full border border-gray-200 rounded-full px-5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400">
+      <form action="{{ route('search') }}" method="GET" class="relative" id="searchForm">
+        <div class="relative">
+          <input
+            type="text"
+            name="query"
+            id="searchInput"
+            placeholder="Search Books..."
+            style="background-color: #f6f6f6;"
+            class="w-full border border-gray-200 rounded-full px-5 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-indigo-400"
+            value="{{ request('query') }}">
+        </div>
+      </form>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+          searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              const form = document.getElementById('searchForm');
+              if (form) {
+                form.submit();
+              }
+            }
+          });
+        }
+      });
+    </script>
 
     <!-- Right: Icons -->
     <div class="flex gap-5 text-sm font-medium text-indigo-800">
