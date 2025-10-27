@@ -42,12 +42,19 @@
 
       <!-- Address Box -->
       <div class="border border-indigo-200 rounded-lg p-6 bg-white">
-        @if(session('shipping_address'))
-          <div class="text-gray-700 text-base leading-relaxed">
-            <p class="mb-2">
-              <strong>Address:</strong> {{ session('shipping_address')['full_name'] }} | (+66) {{ session('shipping_address')['phone_number'] }}
+        @if (session('success'))
+          <div class="mb-4 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800">
+            {{ session('success') }}
+          </div>
+        @endif
+
+        @if(isset($address))
+          <div class="space-y-2 text-gray-700 text-base leading-relaxed">
+            <p class="font-semibold text-indigo-900">
+              {{ $user?->Fname }} {{ $user?->Lname }}
             </p>
-            <p class="ml-20">{{ session('shipping_address')['address'] }}</p>
+            <p>{{ $address->AddressLine }}</p>
+            <p>{{ $address->Subdistrict }}, {{ $address->District }}, {{ $address->Province }} {{ $address->PostalCode }}</p>
           </div>
           <div class="text-right mt-3">
             <a href="{{ route('checkout.edit') }}" class="text-indigo-600 font-semibold hover:underline">Edit</a>

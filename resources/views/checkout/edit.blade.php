@@ -21,23 +21,42 @@
                 Update your shipping details
             </p>
 
+            @if ($errors->any())
+                <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700 text-sm">
+                    <ul class="list-disc pl-5 space-y-1 text-left">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             <!-- ฟอร์ม -->
             <form action="{{ route('checkout.save') }}" method="POST" id="shippingForm">
                 @csrf
                 <div class="space-y-4">
                     <div>
-                        <label for="full_name" class="block text-lg font-semibold">Full Name</label>
-                        <input type="text" name="full_name" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Enter your full name">
+                        <label for="address_line" class="block text-lg font-semibold text-[#2b2b7b]">Address</label>
+                        <textarea id="address_line" name="address_line" class="w-full p-3 border border-gray-300 rounded-lg" rows="3" required placeholder="บ้านเลขที่, หมู่บ้าน, อาคาร ฯลฯ">{{ old('address_line', $address->AddressLine ?? '') }}</textarea>
                     </div>
 
-                    <div>
-                        <label for="phone_number" class="block text-lg font-semibold">Phone Number</label>
-                        <input type="text" name="phone_number" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Enter your phone number">
-                    </div>
-
-                    <div>
-                        <label for="address" class="block text-lg font-semibold">Address</label>
-                        <textarea name="address" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="Enter your address"></textarea>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label for="province" class="block text-lg font-semibold text-[#2b2b7b]">Province</label>
+                            <input type="text" id="province" name="province" value="{{ old('province', $address->Province ?? '') }}" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="จังหวัด">
+                        </div>
+                        <div>
+                            <label for="district" class="block text-lg font-semibold text-[#2b2b7b]">District</label>
+                            <input type="text" id="district" name="district" value="{{ old('district', $address->District ?? '') }}" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="อำเภอ / เขต">
+                        </div>
+                        <div>
+                            <label for="subdistrict" class="block text-lg font-semibold text-[#2b2b7b]">Subdistrict</label>
+                            <input type="text" id="subdistrict" name="subdistrict" value="{{ old('subdistrict', $address->Subdistrict ?? '') }}" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="ตำบล / แขวง">
+                        </div>
+                        <div>
+                            <label for="postal_code" class="block text-lg font-semibold text-[#2b2b7b]">Postal Code</label>
+                            <input type="text" id="postal_code" name="postal_code" value="{{ old('postal_code', $address->PostalCode ?? '') }}" class="w-full p-3 border border-gray-300 rounded-lg" required placeholder="รหัสไปรษณีย์">
+                        </div>
                     </div>
                 </div>
 
@@ -72,8 +91,9 @@
     }
 
     // เมื่อกดปุ่ม Save
-    document.getElementById("shippingForm").addEventListener("submit", function(event) {
-        event.preventDefault();  // หยุดการส่งฟอร์มโดยตรง
+    const shippingForm = document.getElementById("shippingForm");
+    shippingForm.addEventListener("submit", function(event) {
+        event.preventDefault();
         Swal.fire({
             title: 'Are you sure?',
             text: "Do you want to save your shipping address?",
@@ -85,8 +105,7 @@
             cancelButtonText: 'No, cancel'
         }).then((result) => {
             if (result.isConfirmed) {
-                // ถ้าผู้ใช้กด "Yes", ส่งฟอร์ม
-                event.target.submit();
+                shippingForm.submit();
             }
         });
     });

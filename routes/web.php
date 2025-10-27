@@ -87,6 +87,8 @@ Route::middleware('auth')->group(function () {
 Route::post('/checkout/submit', [CheckoutController::class, 'submit'])->name('checkout.submit');
 
 // shipping
-Route::get('/checkout', [ShippingController::class, 'showShippingForm'])->name('checkout');
-Route::get('/checkout/edit', [ShippingController::class, 'editShippingForm'])->name('checkout.edit');
-Route::post('/checkout/save', [ShippingController::class, 'saveShippingAddress'])->name('checkout.save');
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout', [ShippingController::class, 'showShippingForm'])->name('checkout');
+    Route::get('/checkout/edit', [ShippingController::class, 'editShippingForm'])->name('checkout.edit');
+    Route::post('/checkout/save', [ShippingController::class, 'saveShippingAddress'])->name('checkout.save');
+});
