@@ -24,9 +24,9 @@
   </div>
 </section>
 
-<script>
+<!-- <script>
   setTimeout(() => {
     window.location.href = "{{ route('home') }}";
   }, 5000);
-</script>
+</script> -->
 @endsection
