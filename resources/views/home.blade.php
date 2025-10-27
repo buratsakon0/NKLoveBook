@@ -35,7 +35,7 @@
       {{-- หมวดหมู่ --}}
       <div id="category-grid" class="grid md:grid-cols-3 gap-8 transition-all duration-500 ease-in-out max-h-[1500px]">
         {{-- 🟣 หมวด 1 --}}
-        <div class="shadow-md rounded-lg overflow-hidden">
+        <div class="extra-categorys shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/science.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Science & Technology</h4>
@@ -44,7 +44,7 @@
         </div>
 
         {{-- 🟣 หมวด 2 --}}
-        <div class="shadow-md rounded-lg overflow-hidden">
+        <div class="extra-categorys shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/art.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Art & Design</h4>
@@ -53,7 +53,7 @@
         </div>
 
         {{-- 🟣 หมวด 3 --}}
-        <div class="shadow-md rounded-lg overflow-hidden">
+        <div class="extra-categorys shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/manga.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Comics / Manga</h4>
@@ -62,7 +62,7 @@
         </div>
 
         {{-- 🔸 หมวดเพิ่มเติม (เริ่มซ่อน) --}}
-        <div class="hidden extra-category shadow-md rounded-lg overflow-hidden">
+        <div class="extra-categorys hidden extra-category shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
           <img src="{{ asset('images/education and learning.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Education & Learning</h4>
@@ -151,18 +151,42 @@
     /* เมื่อ hover ให้กรอบยกขึ้น */
     .card:hover {
       transform: translateY(-10px); /* ยกขึ้น 10px */
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* เพิ่มเงา */
     }
 
     /* เพิ่มการเคลื่อนไหวของกรอบ */
     .extra-categorys {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: box-shadow 0.3s ease; /* ปรับแค่เงา */
     }
 
     /* เมื่อ hover ให้กรอบยกขึ้น */
     .extra-categorys:hover {
-      transform: translateY(-10px); /* ยกขึ้น 10px */
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* เพิ่มเงา */
+      cursor: pointer; /* ทำให้มีเคอร์เซอร์เป็นมือเวลาชี้ */
+    }
+
+    .extra-category {
+      transition: box-shadow 0.3s ease; /* ปรับแค่เงา */
+    }
+
+    /* เมื่อ hover ให้กรอบยกขึ้น */
+    .extra-category:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* เพิ่มเงา */
+      cursor: pointer; /* ทำให้มีเคอร์เซอร์เป็นมือเวลาชี้ */
+    }
+
+    .fade-in {
+    animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hover effect on category cards */
+    .category-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
     }
   </style>
 
