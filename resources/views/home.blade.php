@@ -37,72 +37,72 @@
       {{-- หมวดหมู่ --}}
       <div id="category-grid" class="grid md:grid-cols-3 gap-8 transition-all duration-500 ease-in-out max-h-[1500px]">
         {{-- 🟣 หมวด 1 --}}
-        <div class="extra-categorys shadow-md rounded-lg overflow-hidden">
+        <a href="/category/2" class="extra-categorys shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/science.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Science & Technology</h4>
             <p class="text-gray-500 text-sm">เปิดโลกแห่งความรู้ด้านวิทยาศาสตร์และเทคโนโลยี เรียนรู้สิ่งใหม่ ๆ ที่เปลี่ยนแปลงโลกและพัฒนาแนวคิดของคุณให้ก้าวไกล</p>
           </div>
-        </div>
+        </a>
 
         {{-- 🟣 หมวด 2 --}}
-        <div class="extra-categorys shadow-md rounded-lg overflow-hidden">
+        <a href="/category/3" class="extra-categorys shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/art.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Art & Design</h4>
             <p class="text-gray-500 text-sm">ดื่มด่ำกับแรงบันดาลใจจากศิลปะและการออกแบบ ไม่ว่าจะเป็นงานภาพ สี หรือแนวคิดสร้างสรรค์ ที่จะเติมเต็มจินตนาการของคุณ</p>
           </div>
-        </div>
+        </a>
 
         {{-- 🟣 หมวด 3 --}}
-        <div class="extra-categorys shadow-md rounded-lg overflow-hidden">
+        <a href="/category/4" class="extra-categorys shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/manga.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Comics / Manga</h4>
             <p class="text-gray-500 text-sm">ผ่อนคลายไปกับเรื่องราวสนุก ๆ จากโลกการ์ตูนและมังงะ ทั้งแนวอบอุ่นหัวใจ แอ็กชันเข้มข้น และเรื่องราวสุดแฟนตาซีที่คุณหลงรัก</p>
           </div>
-        </div>
+</a>
 
         {{-- 🔸 หมวดเพิ่มเติม (เริ่มซ่อน) --}}
-        <div class="extra-categorys hidden extra-category shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+        <a href="\category\1" class="extra-categorys hidden extra-category shadow-md rounded-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
           <img src="{{ asset('images/education and learning.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Education & Learning</h4>
             <p class="text-gray-500 text-sm">เปิดประตูสู่โลกแห่งความรู้ ที่จะช่วยพัฒนาทักษะและมุมมองของคุณให้ก้าวไกล ไม่ว่าจะเป็นความรู้ด้านวิชาการ ภาษา หรือทักษะชีวิตในยุคใหม่</p>
           </div>
-        </div>
+        </a>
 
-        <div class="hidden extra-category shadow-md rounded-lg overflow-hidden">
+        <a href="\category\5" class="hidden extra-category shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/Fiction.png') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Fiction</h4>
             <p class="text-gray-500 text-sm">ดำดิ่งสู่โลกแห่งจินตนาการ ผ่านเรื่องราวที่สะท้อนอารมณ์ ความรัก และแรงบันดาลใจ ที่จะทำให้คุณไม่อยากวางหนังสือลงเลย</p>
           </div>
-        </div>
+        </a>
 
-        <div class="hidden extra-category shadow-md rounded-lg overflow-hidden">
+        <a href="\cetegory\7" class="hidden extra-category shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/Health and Lifestyle.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Health & Lifestyle</h4>
             <p class="text-gray-500 text-sm">ดูแลทั้งกายและใจให้สมดุล ด้วยหนังสือที่เต็มไปด้วยแรงบันดาลใจ เคล็ดลับสุขภาพดี และแนวคิดการใช้ชีวิตอย่างมีความสุข</p>
           </div>
-        </div>
+        </a>
 
-        <div class="hidden extra-category shadow-md rounded-lg overflow-hidden">
+        <a href="\category\6" class="hidden extra-category shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/Children.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Children's Book</h4>
             <p class="text-gray-500 text-sm">ปลุกจินตนาการและการเรียนรู้ของเด็ก ๆ ผ่านเรื่องราวสนุก สีสันสดใส ที่ช่วยเสริมทักษะและปลูกฝังนิสัยรักการอ่านตั้งแต่เยาว์วัย</p>
           </div>
-        </div>
+        </a>
 
-        <div class="hidden extra-category shadow-md rounded-lg overflow-hidden">
+        <a href="\category\8" class="hidden extra-category shadow-md rounded-lg overflow-hidden">
           <img src="{{ asset('images/Travel.jpg') }}" class="w-full h-48 object-cover">
           <div class="p-5">
             <h4 class="font-bold text-indigo-900">Travel</h4>
             <p class="text-gray-500 text-sm">ออกเดินทางไปค้นหาแรงบันดาลใจใหม่ ๆ ผ่านหนังสือท่องเที่ยวทั่วทุกมุมโลก ทั้งเรื่องราวการผจญภัย วัฒนธรรม และความงดงามของสถานที่ต่าง ๆ</p>
           </div>
-        </div>
+        </a>
       </div>
 
       {{-- ปุ่ม View More --}}
