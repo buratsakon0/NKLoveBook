@@ -10,18 +10,20 @@ class SearchController extends Controller
     public function search(Request $request)
     {
         $query = trim($request->input('query', ''));
+        $sort = $request->input('sort');
 
         // If no query, return empty results
         if (empty($query)) {
             return view('search', [
                 'books' => collect([]),
                 'query' => $query,
-                'totalResults' => 0
+                'totalResults' => 0,
+                'currentSort' => null,
             ]);
         }
 
         // Search books by name, author, ISBN, or description
-        $books = Book::with(['author', 'category'])
+        $booksQuery = Book::with(['author', 'category'])
             ->where(function ($q) use ($query) {
                 $q->where('BookName', 'LIKE', "%{$query}%")
                   ->orWhere('ISBN', 'LIKE', "%{$query}%")
@@ -32,14 +34,23 @@ class SearchController extends Controller
                   ->orWhereHas('category', function ($categoryQuery) use ($query) {
                       $categoryQuery->where('CategoryName', 'LIKE', "%{$query}%");
                   });
-            })
-            ->get();
+            });
+
+        if ($sort === 'price_asc') {
+            $booksQuery->orderBy('Price', 'asc');
+        } elseif ($sort === 'price_desc') {
+            $booksQuery->orderBy('Price', 'desc');
+        } else {
+            $sort = null;
+        }
+
+        $books = $booksQuery->get();
 
         return view('search', [
             'books' => $books,
             'query' => $query,
-            'totalResults' => $books->count()
+            'totalResults' => $books->count(),
+            'currentSort' => $sort,
         ]);
     }
 }
-

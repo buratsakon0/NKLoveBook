@@ -35,15 +35,15 @@ class CheckoutController extends Controller
         $this->middleware('auth'); // ใช้ middleware เช็กว่า user login หรือไม่
     }
 
-    public function index()
-    {
-        // หาก user login แล้ว ให้ไปที่หน้า checkout
-        return view('checkout');
-    }
+    // public function index()
+    // {
+    //     // หาก user login แล้ว ให้ไปที่หน้า checkout
+    //     return view('checkout');
+    // }
 
-    public function submit(Request $request)
-    {
-        // ทำการส่งข้อมูลการชำระเงิน หรือประมวลผลที่เกี่ยวกับการ checkout
-    }
+    // public function submit(Request $request)
+    // {
+    //     // ทำการส่งข้อมูลการชำระเงิน หรือประมวลผลที่เกี่ยวกับการ checkout
+    // }
 }
 

@@ -18,6 +18,23 @@
   </div>
 
   @if($books->count() > 0)
+    <div class="max-w-7xl mx-auto flex justify-end px-6 mb-8">
+      <form method="GET" action="{{ route('search') }}" class="flex items-center gap-2">
+        <input type="hidden" name="query" value="{{ $query }}">
+        <label for="search-sort" class="text-sm font-medium text-gray-600">Sort by:</label>
+        <select
+          id="search-sort"
+          name="sort"
+          onchange="this.form.submit()"
+          class="rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-700 focus:border-indigo-400 focus:outline-none focus:ring-1 focus:ring-indigo-300"
+        >
+          <option value="" {{ empty($currentSort) ? 'selected' : '' }}>Relevance</option>
+          <option value="price_asc" {{ ($currentSort ?? '') === 'price_asc' ? 'selected' : '' }}>Price: Low to High</option>
+          <option value="price_desc" {{ ($currentSort ?? '') === 'price_desc' ? 'selected' : '' }}>Price: High to Low</option>
+        </select>
+      </form>
+    </div>
+
     <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 justify-items-start">
       @foreach ($books as $book)
         @php
@@ -115,4 +132,3 @@
 </section>
 
 @endsection
-

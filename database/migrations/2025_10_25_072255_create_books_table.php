@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id('BookID');
             $table->string('BookName');
             $table->string('ISBN')->unique();
-            $table->decimal('Price', 8, 2);
+            $table->decimal('Price', 8, 2)->index();
             $table->integer('Pages');
             $table->text('Description')->nullable();
             $table->foreignId('CategoryID')->constrained('categories', 'CategoryID')->cascadeOnDelete();

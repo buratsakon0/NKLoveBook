@@ -39,9 +39,6 @@ public function register(Request $request)
 
     return redirect()->route('home')->with('success', 'สมัครสมาชิกสำเร็จ!');
 }
-
-
-
     public function login(Request $request) {
         $credentials = $request->validate([
             'Username' => 'required|string',
