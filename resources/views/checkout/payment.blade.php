@@ -62,6 +62,11 @@
                 <p class="text-sm text-gray-500 uppercase tracking-widest">
                   {{ $item->book->author?->AuthorName ?? 'UNKNOWN AUTHOR' }}
                 </p>
+                @isset($item->available_stock)
+                  <p class="text-xs text-amber-500 mt-1">
+                    สต็อกคงเหลือ: {{ $item->available_stock }} เล่ม
+                  </p>
+                @endisset
               </div>
               <div class="text-right">
                 <p class="text-sm text-gray-500">x{{ $item->Quantity }}</p>

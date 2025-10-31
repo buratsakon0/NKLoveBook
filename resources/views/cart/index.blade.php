@@ -17,6 +17,24 @@
     CART
   </h1>
 
+  @foreach (['success' => 'green', 'warning' => 'amber', 'error' => 'red'] as $flash => $color)
+    @if (session($flash))
+      <div class="mb-6 rounded-lg border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-{{ $color }}-700">
+        {{ session($flash) }}
+      </div>
+    @endif
+  @endforeach
+
+  @if ($errors->any())
+    <div class="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
+      <ul class="list-disc pl-5 space-y-1">
+        @foreach ($errors->all() as $error)
+          <li>{{ $error }}</li>
+        @endforeach
+      </ul>
+    </div>
+  @endif
+
   @if(!empty($cart))
     <div class="bg-white shadow-md rounded-lg border border-gray-200">
       <table class="w-full text-left border-collapse">
@@ -39,6 +57,11 @@
                   <p class="text-sm text-gray-500 mt-1 uppercase tracking-wide">
                     {{ $product['author'] ?? 'Unknown Author' }}
                   </p>
+                  @if(isset($product['stock']))
+                    <p class="text-xs text-amber-600 mt-1">
+                      คงเหลือ: {{ $product['stock'] }} เล่ม
+                    </p>
+                  @endif
                 </div>
               </td>
               <td class="py-4 px-6">฿{{ number_format($product['price'], 2) }}</td>
@@ -108,10 +131,11 @@
     const quantityElement = document.getElementById('quantity-' + productId);
     let currentQuantity = parseInt(quantityElement.textContent);
 
-    if (action === 'increase') currentQuantity++;
-    else if (action === 'decrease' && currentQuantity > 1) currentQuantity--;
-
-    quantityElement.textContent = currentQuantity;
+    if (action === 'increase') {
+      currentQuantity++;
+    } else if (action === 'decrease' && currentQuantity > 1) {
+      currentQuantity--;
+    }
 
     const formData = new FormData();
     formData.append('action', action);
@@ -125,7 +149,11 @@
     })
     .then(res => res.json())
     .then(data => {
-      if (data.success) window.location.reload();
+      if (!data.success && data.message) {
+        alert(data.message);
+      }
+
+      window.location.reload();
     });
   }
 </script>

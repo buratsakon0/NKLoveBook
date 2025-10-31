@@ -15,6 +15,7 @@
     $inWishlist = auth()->check()
         ? auth()->user()->wishlists()->where('BookID', $book->BookID)->exists()
         : false;
+    $availableStock = max($book->Stock ?? 0, 0);
   @endphp
 
   <section class="bg-gray-50 py-12">
@@ -44,45 +45,58 @@
               <p><span class="font-semibold text-gray-900">หมวดหมู่:</span> <a href="/category/{{$book->CategoryID}}">{{ $categoryName }}<a></p>
               <p><span class="font-semibold text-gray-900">ISBN:</span> {{ $book->ISBN }}</p>
               <p><span class="font-semibold text-gray-900">จำนวนหน้า:</span> {{ $book->Pages }}</p>
+              <p><span class="font-semibold text-gray-900">สต็อกคงเหลือ:</span>
+                @if($availableStock > 0)
+                  <span class="text-green-600 font-semibold">{{ $availableStock }}</span> เล่ม
+                @else
+                  <span class="text-red-500 font-semibold">หมดสต็อก</span>
+                @endif
+              </p>
             </div>
           </div>
 
           <p class="text-4xl font-bold text-orange-500">฿ {{ number_format($book->Price, 2) }}</p>
 
           <div class="flex flex-wrap items-center mt-4 gap-5">
-            @auth
-              <!-- ✅ ผู้ใช้ล็อกอินแล้ว -->
-              <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="event.preventDefault(); addToCart({{ $book->BookID }});">
-                @csrf
-                <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+            @if($availableStock > 0)
+              @auth
+                <!-- ✅ ผู้ใช้ล็อกอินแล้ว -->
+                <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="event.preventDefault(); addToCart({{ $book->BookID }});">
+                  @csrf
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
+                    <i class="fa fa-shopping-cart"></i>
+                    ADD TO CART
+                  </button>
+                </form>
+
+                <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="window.location.href='/cart'">
+                  @csrf
+                  <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
+                  <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                    <i class="fa fa-bolt"></i>
+                    BUY
+                  </button>
+                </form>
+              @else
+                <!-- 🚫 ผู้ใช้ยังไม่ได้ล็อกอิน -->
+                <button onclick="showLoginAlert()" 
+                  class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
                   <i class="fa fa-shopping-cart"></i>
                   ADD TO CART
                 </button>
-              </form>
 
-              <form action="{{ route('cart.add', $book->BookID) }}" method="POST" onsubmit="window.location.href='/cart'">
-                @csrf
-                <input type="hidden" name="quantity" id="cartQuantityBuy" value="1">
-                <button type="submit" class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
+                <button onclick="window.location.href='/login'" 
+                  class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
                   <i class="fa fa-bolt"></i>
                   BUY
                 </button>
-              </form>
+              @endauth
             @else
-              <!-- 🚫 ผู้ใช้ยังไม่ได้ล็อกอิน -->
-              <button onclick="showLoginAlert()" 
-                class="flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-full text-sm font-semibold tracking-wide shadow hover:bg-orange-600 transition">
-                <i class="fa fa-shopping-cart"></i>
-                ADD TO CART
-              </button>
-
-              <button onclick="window.location.href='/login'" 
-                class="flex items-center gap-2 border border-orange-500 text-orange-500 px-6 py-3 rounded-full text-sm font-semibold tracking-wide hover:bg-orange-50 transition">
-                <i class="fa fa-bolt"></i>
-                BUY
-              </button>
-            @endauth
+              <div class="text-red-500 font-semibold text-sm uppercase tracking-wide">
+                สินค้าหมดชั่วคราว
+              </div>
+            @endif
           </div>
 
         </div>

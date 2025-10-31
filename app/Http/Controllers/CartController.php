@@ -16,6 +16,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $cart = [];
+        $stockAdjusted = false;
 
         if ($user) {
             $cartModel = Cart::firstOrCreate(['UserID' => $user->getKey()]);
@@ -30,10 +31,30 @@ class CartController extends Controller
             $cartItems = $cartModel->items()->with('book.author')->get();
             foreach ($cartItems as $item) {
                 if (!$item->book) {
+                    $stockAdjusted = true;
+                    $item->delete();
                     continue;
                 }
 
-                $cart[$item->book->BookID] = $this->formatProductArray($item->book, $item->Quantity);
+                $availableStock = max((int) $item->book->Stock, 0);
+                if ($availableStock <= 0) {
+                    $stockAdjusted = true;
+                    $item->delete();
+                    continue;
+                }
+
+                $finalQuantity = min($item->Quantity, $availableStock);
+
+                if ($finalQuantity !== $item->Quantity) {
+                    $stockAdjusted = true;
+                    $item->Quantity = $finalQuantity;
+                    $item->save();
+                }
+
+                $productArray = $this->formatProductArray($item->book, $finalQuantity);
+                if ($productArray !== null) {
+                    $cart[$item->book->BookID] = $productArray;
+                }
             }
 
             session()->put('cart', $cart);
@@ -44,24 +65,50 @@ class CartController extends Controller
                 $bookIds = array_keys($cart);
                 $books = Book::whereIn('BookID', $bookIds)->with('author')->get()->keyBy('BookID');
 
-                foreach ($cart as $productId => &$product) {
+                $normalizedCart = [];
+
+                foreach ($cart as $productId => $product) {
                     $book = $books->get($productId);
                     if ($book) {
-                        $product = $this->formatProductArray(
+                        $quantity = (int) ($product['quantity'] ?? 1);
+                        $availableStock = max((int) $book->Stock, 0);
+
+                        if ($availableStock <= 0) {
+                            $stockAdjusted = true;
+                            continue;
+                        }
+
+                        $finalQuantity = min($quantity, $availableStock);
+                        if ($finalQuantity !== $quantity) {
+                            $stockAdjusted = true;
+                        }
+                        $formatted = $this->formatProductArray(
                             $book,
-                            $product['quantity'] ?? 1,
+                            $finalQuantity,
                             $product
                         );
-                    } elseif (!isset($product['image']) || empty($product['image'])) {
-                        $product['image'] = asset('images/default-book.jpg');
+
+                        if ($formatted !== null) {
+                            $normalizedCart[$productId] = $formatted;
+                        }
                     } else {
-                        $product['image'] = $this->normalizeStoredImagePath($product['image']);
+                        if (!isset($product['image']) || empty($product['image'])) {
+                            $product['image'] = asset('images/default-book.jpg');
+                        } else {
+                            $product['image'] = $this->normalizeStoredImagePath($product['image']);
+                        }
+                        $normalizedCart[$productId] = $product;
                     }
                 }
-                unset($product);
+
+                $cart = $normalizedCart;
 
                 session()->put('cart', $cart);
             }
+        }
+
+        if ($stockAdjusted) {
+            session()->flash('warning', 'จำนวนสินค้าในตะกร้าบางรายการถูกปรับตามสต็อกที่มีอยู่ในขณะนี้');
         }
 
         if (empty($cart)) {
@@ -89,15 +136,68 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         if (isset($cart[$productId])) {
-            if ($action == 'increase') {
+            $book = Book::find($productId);
+
+            if (!$book || (int) $book->Stock <= 0) {
+                unset($cart[$productId]);
+                session()->put('cart', $cart);
+                $this->removeFromDatabase((int) $productId);
+
+                return response()->json([
+                    'success' => false,
+                    'cart' => $cart,
+                    'message' => 'หนังสือเล่มนี้หมดสต็อกแล้ว',
+                ]);
+            }
+
+            $availableStock = (int) $book->Stock;
+
+            if ($action === 'increase') {
+                if ($cart[$productId]['quantity'] >= $availableStock) {
+                    $cart[$productId]['quantity'] = $availableStock;
+
+                    session()->put('cart', $cart);
+                    $this->syncQuantityToDatabase((int) $productId, $availableStock);
+
+                    return response()->json([
+                        'success' => false,
+                        'cart' => $cart,
+                        'message' => "จำนวนสูงสุดที่สามารถสั่งซื้อได้คือ {$availableStock} เล่ม",
+                    ]);
+                }
+
                 $cart[$productId]['quantity']++;
-            } elseif ($action == 'decrease' && $cart[$productId]['quantity'] > 1) {
+            } elseif ($action === 'decrease' && $cart[$productId]['quantity'] > 1) {
                 $cart[$productId]['quantity']--;
             }
-            $this->syncQuantityToDatabase((int) $productId, $cart[$productId]['quantity']);
 
+            $formattedProduct = $this->formatProductArray(
+                $book,
+                $cart[$productId]['quantity'],
+                $cart[$productId]
+            );
+
+            if ($formattedProduct === null) {
+                unset($cart[$productId]);
+                session()->put('cart', $cart);
+                $this->removeFromDatabase((int) $productId);
+
+                return response()->json([
+                    'success' => false,
+                    'cart' => $cart,
+                    'message' => 'ไม่สามารถอัปเดตสินค้าได้เนื่องจากสต็อกหมด',
+                ]);
+            }
+
+            $cart[$productId] = $formattedProduct;
+
+            $this->syncQuantityToDatabase((int) $productId, $cart[$productId]['quantity']);
             session()->put('cart', $cart);
-            return response()->json(['success' => true, 'cart' => $cart]);
+
+            return response()->json([
+                'success' => true,
+                'cart' => $cart,
+            ]);
         }
 
         return response()->json(['success' => false]);
@@ -130,26 +230,46 @@ class CartController extends Controller
         $requestedQuantity = (int) $request->input('quantity', 1);
         $requestedQuantity = $requestedQuantity > 0 ? $requestedQuantity : 1;
 
-        $imageUrl = $this->resolveImagePath($book->cover_image);
+        $availableStock = max((int) $book->Stock, 0);
+        if ($availableStock <= 0) {
+            return redirect()->back()->with('error', 'หนังสือเล่มนี้หมดสต็อกแล้ว');
+        }
 
-        // ถ้ามีหนังสือเล่มนี้อยู่แล้วในตะกร้า
-        if (isset($cart[$bookId])) {
-            $cart[$bookId]['quantity'] += $requestedQuantity;
-        } else {
-            $cart[$bookId] = [
-                'name' => $book->BookName,
-                'price' => $book->Price,
-                'quantity' => $requestedQuantity,
-                'image' => $imageUrl,
-                'author' => $book->author?->AuthorName ?? 'UNKNOWN AUTHOR',
-            ];
+        $currentQuantity = $cart[$bookId]['quantity'] ?? 0;
+        $desiredQuantity = $currentQuantity + $requestedQuantity;
+        $finalQuantity = min($desiredQuantity, $availableStock);
+
+        $existingProduct = $cart[$bookId] ?? [
+            'author' => $book->author?->AuthorName ?? 'UNKNOWN AUTHOR',
+        ];
+        $formattedProduct = $this->formatProductArray($book, $finalQuantity, $existingProduct);
+
+        if ($formattedProduct === null) {
+            unset($cart[$bookId]);
+            return redirect()
+                ->back()
+                ->with('error', 'ไม่สามารถเพิ่มหนังสือเล่มนี้ได้เนื่องจากสต็อกหมด');
+        }
+
+        $cart[$bookId] = $formattedProduct;
+
+        if ($finalQuantity <= 0) {
+            unset($cart[$bookId]);
+            return redirect()
+                ->back()
+                ->with('error', 'ไม่สามารถเพิ่มหนังสือเล่มนี้ได้เนื่องจากสต็อกหมด');
         }
 
         // เก็บตะกร้าใน session
         session()->put('cart', $cart);
-        $this->syncQuantityToDatabase($bookId, $cart[$bookId]['quantity']);
+        $this->syncQuantityToDatabase($bookId, $finalQuantity);
 
-        return redirect()->route('cart.index');
+        $message = $finalQuantity < $desiredQuantity
+            ? "จำนวนถูกจำกัดตามสต็อกที่มีอยู่ (สูงสุด {$availableStock} เล่ม)"
+            : 'เพิ่มหนังสือลงในตะกร้าเรียบร้อยแล้ว';
+        $messageType = $finalQuantity < $desiredQuantity ? 'warning' : 'success';
+
+        return redirect()->route('cart.index')->with($messageType, $message);
     }
     // ฟังก์ชันสำหรับลบสินค้าออกจากตะกร้า
     public function remove($productId)
@@ -208,32 +328,66 @@ class CartController extends Controller
         $quantity = $request->input('quantity');
 
         // ตรวจสอบว่าใน Cart มีสินค้านี้อยู่แล้วหรือไม่
-        if (isset($cart[$bookId])) {
-            $cart[$bookId]['quantity'] = $quantity;  // อัปเดตจำนวนสินค้า
-        } else {
-            // ถ้าไม่มีสินค้าใน Cart, เพิ่มสินค้าใหม่
-            $cart[$bookId] = [
-                'book_name' => $request->input('book_name'),
-                'quantity' => $quantity,
-                'price' => $request->input('price')
-            ];
+        $book = Book::find($bookId);
+        if (!$book || (int) $book->Stock <= 0) {
+            unset($cart[$bookId]);
+            session()->put('cart', $cart);
+            $this->removeFromDatabase((int) $bookId);
+
+            return response()->json([
+                'cartCount' => count($cart),
+                'message' => 'หนังสือเล่มนี้หมดสต็อกแล้ว',
+            ]);
         }
+
+        $clampedQuantity = max(1, min((int) $quantity, (int) $book->Stock));
+
+        $formattedProduct = $this->formatProductArray(
+            $book,
+            $clampedQuantity,
+            $cart[$bookId] ?? [
+                'author' => $book->author?->AuthorName ?? 'UNKNOWN AUTHOR',
+            ]
+        );
+
+        if ($formattedProduct === null) {
+            unset($cart[$bookId]);
+            session()->put('cart', $cart);
+            $this->removeFromDatabase((int) $bookId);
+
+            return response()->json([
+                'cartCount' => count($cart),
+                'message' => 'สินค้านี้หมดสต็อกแล้ว',
+            ]);
+        }
+
+        $cart[$bookId] = $formattedProduct;
 
         session()->put('cart', $cart);
         $this->syncQuantityToDatabase((int) $bookId, (int) $cart[$bookId]['quantity']);
 
         // คืนค่าจำนวนสินค้าทั้งหมดใน Cart
-        return response()->json(['cartCount' => count($cart)]);
+        return response()->json([
+            'cartCount' => count($cart),
+            'message' => $clampedQuantity < (int) $quantity
+                ? "จำนวนถูกจำกัดตามสต็อกที่มีอยู่ (สูงสุด {$book->Stock} เล่ม)"
+                : null,
+        ]);
     }
 
-    protected function formatProductArray(Book $book, int $quantity, array $existing = []): array
+    protected function formatProductArray(Book $book, int $quantity, array $existing = []): ?array
     {
+        if ($quantity <= 0) {
+            return null;
+        }
+
         return [
             'name' => $book->BookName,
             'price' => $book->Price,
             'quantity' => $quantity,
             'image' => $this->resolveImagePath($book->cover_image),
             'author' => $book->author?->AuthorName ?? ($existing['author'] ?? 'UNKNOWN AUTHOR'),
+            'stock' => (int) $book->Stock,
         ];
     }
 
@@ -250,10 +404,13 @@ class CartController extends Controller
             return;
         }
 
-        if ($quantity <= 0) {
+        $book = Book::find($bookId);
+        if (!$book || (int) $book->Stock <= 0) {
             $this->removeFromDatabase($bookId);
             return;
         }
+
+        $quantity = max(1, min($quantity, (int) $book->Stock));
 
         CartItem::updateOrCreate(
             [
@@ -269,6 +426,16 @@ class CartController extends Controller
     protected function persistCartItem(Cart $cart, int $bookId, int $quantity): void
     {
         $quantity = max($quantity, 1);
+
+        $book = Book::find($bookId);
+        if (!$book || (int) $book->Stock <= 0) {
+            CartItem::where('CartID', $cart->getKey())
+                ->where('BookID', $bookId)
+                ->delete();
+            return;
+        }
+
+        $quantity = min($quantity, (int) $book->Stock);
 
         $existing = CartItem::where('CartID', $cart->getKey())
             ->where('BookID', $bookId)

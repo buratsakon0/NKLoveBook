@@ -672,7 +672,13 @@ class BookSeeder extends Seeder
         ];
 
         foreach ($books as $book) {
-            Book::firstOrCreate(['ISBN' => $book['ISBN']], $book);
+            $payload = $book;
+            $payload['Stock'] = $payload['Stock'] ?? random_int(5, 40);
+
+            Book::updateOrCreate(
+                ['ISBN' => $book['ISBN']],
+                $payload
+            );
         }
     }
 }

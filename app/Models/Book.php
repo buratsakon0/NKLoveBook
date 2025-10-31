@@ -11,12 +11,25 @@ class Book extends Model
 
     protected $table = 'books';
     protected $primaryKey = 'BookID';
-     protected $fillable = [
-        'BookName', 'ISBN', 'Price', 'Pages', 'Description',
-        'CategoryID', 'PublisherID', 'AuthorID', 'cover_image'
+    protected $fillable = [
+        'BookName',
+        'ISBN',
+        'Price',
+        'Stock',
+        'Pages',
+        'Description',
+        'CategoryID',
+        'PublisherID',
+        'AuthorID',
+        'cover_image',
     ];
 
     public $timestamps = true;
+
+    protected $casts = [
+        'Stock' => 'integer',
+        'Price' => 'decimal:2',
+    ];
 
     public function category() {
         return $this->belongsTo(Category::class, 'CategoryID', 'CategoryID');

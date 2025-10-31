@@ -11,9 +11,12 @@
 
     <h1 class="text-3xl font-semibold text-emerald-600">Thank You!</h1>
     <p class="mt-2 text-gray-600">Payment completed successfully.</p>
-    <p class="mt-1 text-sm text-gray-400">
-      You&apos;ll be redirected to the home page shortly. If not, use the button below.
-    </p>
+    @if(!empty($orderId))
+      <p class="mt-1 text-sm text-gray-500">Order ID: <span class="font-semibold text-gray-700">#{{ $orderId }}</span></p>
+    @endif
+    @if(!empty($paymentId))
+    @endif
+ 
 
     <a href="{{ route('home') }}"
       class="mt-8 inline-flex items-center justify-center rounded-full bg-emerald-500 px-8 py-3 text-white font-medium shadow hover:bg-emerald-600 transition"
